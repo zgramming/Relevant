@@ -79,7 +79,8 @@ class HomePage extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) => Card(
-                margin: EdgeInsets.only(),
+                // ignore: use_named_constants
+                margin: const EdgeInsets.only(),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: IntrinsicHeight(
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            decoration: BoxDecoration(color: primary),
+                            decoration: const BoxDecoration(color: primary),
                           ),
                         ),
                         Expanded(
@@ -120,31 +121,34 @@ class HomePage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Icon(Icons.bookmark_add_outlined),
+                                    const Icon(Icons.bookmark_add_outlined),
                                   ],
                                 ),
-                                SizedBox(height: 10),
-                                Text(
+                                const SizedBox(height: 10),
+                                const Text(
                                   'Title Loremp Ipsum',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Icon(Icons.calendar_today, size: 10),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      GlobalFunction.formatYMDHM(
-                                        DateTime.now(),
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.calendar_today, size: 10),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        GlobalFunction.formatYMDHM(
+                                          DateTime.now(),
+                                        ),
+                                        style: lato.copyWith(
+                                          fontSize: 8.0,
+                                        ),
                                       ),
-                                      style: lato.copyWith(
-                                        fontSize: 8.0,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                               ],
                             ),
                           ),

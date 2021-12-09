@@ -44,7 +44,7 @@ class MyEventPage extends StatelessWidget {
           titleTextStyle: latoWhite.copyWith(fontWeight: FontWeight.bold),
           headerMargin: const EdgeInsets.only(bottom: 32.0),
         ),
-        locale: indonesiaLocale,
+        locale: 'id_ID',
         onDaySelected: (selectedDay, focusedDay) => GlobalFunction.showSnackBar(
           context,
           content: Text(GlobalFunction.formatYMDHMS(focusedDay)),

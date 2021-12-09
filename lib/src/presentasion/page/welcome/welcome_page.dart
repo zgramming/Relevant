@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:relevant/src/presentasion/page/my_event/my_event_page.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../../utils/utils.dart';
 import '../home/home_page.dart';
+import '../my_bookmark/my_bookmark_page.dart';
+import '../my_event/my_event_page.dart';
 
 class WelcomePage extends StatefulWidget {
   static const routeNamed = '/welcome-page';
@@ -24,7 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
   final _screens = const [
     HomePage(),
     MyEventPage(),
-    Text('bookmar'),
+    MyBookmarkPage(),
     Text('alun'),
   ];
 
