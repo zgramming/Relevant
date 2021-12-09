@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import '../../utils/utils.dart';

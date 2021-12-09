@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:relevant/src/presentasion/page/splash/splash_page.dart';
 
+import 'presentasion/page/home/home_page.dart';
 import 'presentasion/page/login/login_page.dart';
 import 'presentasion/page/registration/register_organization_page.dart';
 import 'presentasion/page/registration/register_volunteer_page.dart';
+import 'presentasion/page/splash/splash_page.dart';
 import 'presentasion/page/welcome/welcome_page.dart';
 import 'utils/utils.dart';
 
@@ -58,6 +59,10 @@ class MyApp extends StatelessWidget {
             return route.slideTransition(
               screen: (ctx, animation, secondaryAnimation) => const CreateEventPage(),
               slidePosition: SlidePosition.fromLeft,
+            );
+          case DetailEventPage.routeNamed:
+            return route.fadeTransition(
+              screen: (ctx, animation, secondaryAnimation) => const DetailEventPage(),
             );
 
           default:

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
+
 import '../../../utils/utils.dart';
+import '../widgets/contact_information.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -34,10 +36,15 @@ class HomePage extends StatelessWidget {
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: primary,
-                            borderRadius: BorderRadius.circular(10),
+                        child: InkWell(
+                          onTap: () async {
+                            await globalNavigation.pushNamed(routeName: DetailEventPage.routeNamed);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ),
@@ -161,6 +168,213 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DetailEventPage extends StatelessWidget {
+  static const routeNamed = '/detail-event-page';
+  const DetailEventPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Detail Event'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.bookmark),
+          ),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: sizes.height(context) / 4,
+                    decoration: const BoxDecoration(
+                      color: primary4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Lorem Ipsum title',
+                          style: lato.copyWith(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Wrap(
+                            spacing: 10,
+                            children: [
+                              Card(
+                                // ignore: use_named_constants
+                                margin: const EdgeInsets.only(),
+                                color: primary2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    'Online',
+                                    style: latoWhite.copyWith(fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                // ignore: use_named_constants
+                                margin: const EdgeInsets.only(),
+                                color: primary2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    'Pendidikan',
+                                    style: latoWhite.copyWith(fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          'PT. Cinta Kasih Sekolah.inc',
+                          style: latoPrimary.copyWith(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Deskripsi',
+                                style: lato.copyWith(
+                                  color: darkGrey400,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.arrow_drop_down),
+                            ),
+                          ],
+                        ),
+                        Card(
+                          // ignore: use_named_constants
+                          margin: const EdgeInsets.only(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              // ignore: leading_newlines_in_multiline_strings
+                              """Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                              """,
+                              style: lato.copyWith(color: darkGrey),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Relawan Mengikuti',
+                                style: lato.copyWith(
+                                  color: darkGrey400,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            CircleAvatar(
+                              backgroundColor: primary2,
+                              radius: 15.0,
+                              foregroundColor: Colors.white,
+                              child: FittedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    '200',
+                                    style: latoWhite.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: sizes.height(context) / 10,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 10,
+                            itemExtent: 100,
+                            itemBuilder: (context, index) => const CircleAvatar(
+                              backgroundColor: primary3,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Kontak Organisasi',
+                          style: lato.copyWith(
+                            color: darkGrey400,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 10,
+                          runSpacing: 20,
+                          children: const [
+                            ContactInformation(title: 'WhatsApp', icon: Icons.phone),
+                            ContactInformation(title: 'Website', icon: Icons.web),
+                            ContactInformation(title: 'Instagram', icon: Icons.social_distance),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            child: ElevatedButton(
+              onPressed: () async {},
+              style: ElevatedButton.styleFrom(
+                primary: primary,
+                padding: const EdgeInsets.all(16.0),
+              ),
+              child: Text(
+                'Ikut Event',
+                style: latoWhite.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
