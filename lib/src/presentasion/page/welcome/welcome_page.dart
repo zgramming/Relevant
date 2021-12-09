@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/utils.dart';
 import '../home/home_page.dart';
+import '../my_account/my_account_page.dart';
 import '../my_bookmark/my_bookmark_page.dart';
 import '../my_event/my_event_page.dart';
 
@@ -25,7 +26,7 @@ class _WelcomePageState extends State<WelcomePage> {
     HomePage(),
     MyEventPage(),
     MyBookmarkPage(),
-    Text('alun'),
+    MyAccountPage(),
   ];
 
   int _selectedIndex = 0;
@@ -36,7 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
       appBar: AppBar(
         centerTitle: true,
         leading: Container(
-          margin: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(12.0),
           child: const CircleAvatar(
             backgroundColor: Colors.white,
           ),
