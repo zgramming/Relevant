@@ -50,138 +50,141 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         );
       }
     });
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: Container(color: primary)),
-          Positioned.fill(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Login',
-                  style: latoWhite.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32.0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(child: Container(color: primary)),
+            Positioned.fill(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login',
+                    style: latoWhite.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32.0,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: 10),
-                        TextFormFieldCustom(
-                          controller: emailController,
-                          disableOutlineBorder: false,
-                          prefixIcon: const Icon(Icons.email),
-                          hintText: 'john.doe@gmail.com',
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormFieldCustom(
-                          controller: passwordController,
-                          disableOutlineBorder: false,
-                          isPassword: true,
-                          hintText: '********',
-                        ),
-                        const SizedBox(height: 20),
-                        Consumer(
-                          builder: (context, ref, child) {
-                            return ElevatedButton(
-                              onPressed: () async {
-                                await ref.read(userNotifier.notifier).login(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                    );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(16.0),
-                                primary: primary,
-                              ),
-                              child: Text(
-                                'Login',
-                                style: latoWhite.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
+                  const SizedBox(height: 20),
+                  Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 10),
+                          TextFormFieldCustom(
+                            controller: emailController,
+                            disableOutlineBorder: false,
+                            prefixIcon: const Icon(Icons.email),
+                            hintText: 'john.doe@gmail.com',
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormFieldCustom(
+                            controller: passwordController,
+                            disableOutlineBorder: false,
+                            isPassword: true,
+                            hintText: '********',
+                          ),
+                          const SizedBox(height: 20),
+                          Consumer(
+                            builder: (context, ref, child) {
+                              return ElevatedButton(
+                                onPressed: () async {
+                                  await ref.read(userNotifier.notifier).login(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(16.0),
+                                  primary: primary,
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        KeyboardVisibilityBuilder(
-                          builder: (context, child, isKeyboardVisible) {
-                            if (isKeyboardVisible) {
-                              return const SizedBox();
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Belum punya akun ?',
-                                  style: latoPrimary.copyWith(fontSize: 12.0),
-                                  textAlign: TextAlign.center,
+                                child: Text(
+                                  'Login',
+                                  style: latoWhite.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
                                 ),
-                                const SizedBox(height: 20),
-                                OutlinedButton(
-                                  onPressed: () async => globalNavigation.pushNamed(
-                                    routeName: RegisterVolunteerPage.routeNamed,
+                              );
+                            },
+                          ),
+                          KeyboardVisibilityBuilder(
+                            builder: (context, child, isKeyboardVisible) {
+                              if (isKeyboardVisible) {
+                                return const SizedBox();
+                              }
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    'Belum punya akun ?',
+                                    style: latoPrimary.copyWith(fontSize: 12.0),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(12.0),
-                                    side: const BorderSide(color: secondary),
-                                  ),
-                                  child: Text(
-                                    'Daftar sebagai relawan',
-                                    style: latoSecondary.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.0,
+                                  const SizedBox(height: 20),
+                                  OutlinedButton(
+                                    onPressed: () async => globalNavigation.pushNamed(
+                                      routeName: RegisterVolunteerPage.routeNamed,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(12.0),
+                                      side: const BorderSide(color: secondary),
+                                    ),
+                                    child: Text(
+                                      'Daftar sebagai relawan',
+                                      style: latoSecondary.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  'Atau',
-                                  style: latoSecondary.copyWith(fontSize: 12.0),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 5),
-                                OutlinedButton(
-                                  onPressed: () async => globalNavigation.pushNamed(
-                                    routeName: RegisterOrganizationPage.routeNamed,
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    'Atau',
+                                    style: latoSecondary.copyWith(fontSize: 12.0),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(12.0),
-                                    side: const BorderSide(color: secondary),
-                                  ),
-                                  child: Text(
-                                    'Daftar sebagai Organisasi',
-                                    style: latoSecondary.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.0,
+                                  const SizedBox(height: 5),
+                                  OutlinedButton(
+                                    onPressed: () async => globalNavigation.pushNamed(
+                                      routeName: RegisterOrganizationPage.routeNamed,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(12.0),
+                                      side: const BorderSide(color: secondary),
+                                    ),
+                                    child: Text(
+                                      'Daftar sebagai Organisasi',
+                                      style: latoSecondary.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
+                                  const SizedBox(height: 20),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
