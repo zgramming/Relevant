@@ -53,6 +53,12 @@ class MyApp extends StatelessWidget {
               screen: (ctx, animation, secondaryAnimation) => const WelcomePage(),
             );
 
+          case CreateEventPage.routeNamed:
+            return route.slideTransition(
+              screen: (ctx, animation, secondaryAnimation) => const CreateEventPage(),
+              slidePosition: SlidePosition.fromLeft,
+            );
+
           default:
           // return SizedBox();
         }

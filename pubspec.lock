@@ -308,7 +308,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: a184fecd5419dbba67bbb4d0323c23f5b1ba63d5
+      resolved-ref: "62e7e96d84e12bfc0c572c21454beac36c2682e6"
       url: "https://github.com/zgramming/Global-Template-null-safety"
     source: git
     version: "2.0.2"

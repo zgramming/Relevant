@@ -7,7 +7,7 @@ import '../../../data/model/user/user_register_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/user/user_notifier.dart';
 import '../welcome/welcome_page.dart';
-import 'widgets/form_content.dart';
+import '../widgets/form_content.dart';
 
 class RegisterVolunteerPage extends ConsumerStatefulWidget {
   static const routeNamed = '/register-volunteer-page';
@@ -67,7 +67,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                   children: [
                     FormContent(
                       title: 'Nama Lengkap',
-                      textFormFieldCustom: TextFormFieldCustom(
+                      child: TextFormFieldCustom(
                         controller: fullnameController,
                         disableOutlineBorder: false,
                         hintText: 'Zeffry Reynando',
@@ -76,7 +76,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                     const SizedBox(height: 20),
                     FormContent(
                       title: 'Email',
-                      textFormFieldCustom: TextFormFieldCustom(
+                      child: TextFormFieldCustom(
                         controller: emailController,
                         disableOutlineBorder: false,
                         hintText: 'zeffry.reynando@gmail.com',
@@ -85,7 +85,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                     const SizedBox(height: 20),
                     FormContent(
                       title: 'Password',
-                      textFormFieldCustom: TextFormFieldCustom(
+                      child: TextFormFieldCustom(
                         controller: passwordController,
                         disableOutlineBorder: false,
                         hintText: '********',
@@ -95,7 +95,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                     const SizedBox(height: 20),
                     FormContent(
                       title: 'Konfirmasi Password',
-                      textFormFieldCustom: TextFormFieldCustom(
+                      child: TextFormFieldCustom(
                         controller: passwordConfirmationController,
                         disableOutlineBorder: false,
                         hintText: '********',

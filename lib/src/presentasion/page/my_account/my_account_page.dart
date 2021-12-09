@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
+
 import '../../../utils/utils.dart';
+import '../welcome/welcome_page.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);
@@ -17,8 +19,8 @@ class MyAccountPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: ListTile.divideTiles(
-                  tiles: const [
-                    Padding(
+                  tiles: [
+                    const Padding(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
                         leading: CircleAvatar(
@@ -30,7 +32,7 @@ class MyAccountPage extends StatelessWidget {
                         trailing: Icon(Icons.chevron_right),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
                         leading: CircleAvatar(
@@ -43,16 +45,19 @@ class MyAccountPage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
-                        leading: CircleAvatar(
+                        onTap: () async {
+                          await globalNavigation.pushNamed(routeName: CreateEventPage.routeNamed);
+                        },
+                        leading: const CircleAvatar(
                           backgroundColor: primary2,
                           foregroundColor: Colors.white,
                           child: Icon(Icons.perm_contact_calendar),
                         ),
-                        title: Text('Buat Event'),
-                        subtitle: Text('Khusus Organisasi'),
-                        trailing: Icon(Icons.chevron_right),
+                        title: const Text('Buat Event'),
+                        subtitle: const Text('Khusus Organisasi'),
+                        trailing: const Icon(Icons.chevron_right),
                       ),
                     ),
                   ],

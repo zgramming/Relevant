@@ -31,7 +31,7 @@ class GlobalNavigation {
     navigatorKey.currentState?.popUntil(predicate);
   }
 
-  static void pop() {
+  void pop() {
     navigatorKey.currentState?.pop();
   }
 }

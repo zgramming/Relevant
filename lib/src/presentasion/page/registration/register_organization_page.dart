@@ -8,7 +8,7 @@ import '../../../data/model/user/user_register_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/user/user_notifier.dart';
 import '../welcome/welcome_page.dart';
-import 'widgets/form_content.dart';
+import '../widgets/form_content.dart';
 
 class RegisterOrganizationPage extends ConsumerStatefulWidget {
   static const routeNamed = '/register-organization-page';
@@ -81,7 +81,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                     children: [
                       FormContent(
                         title: 'Nama Organisasi',
-                        textFormFieldCustom: TextFormFieldCustom(
+                        child: TextFormFieldCustom(
                           controller: nameOrganizationController,
                           disableOutlineBorder: false,
                           hintText: 'Zeffry Reynando',
@@ -90,7 +90,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                       const SizedBox(height: 20),
                       FormContent(
                         title: 'Email',
-                        textFormFieldCustom: TextFormFieldCustom(
+                        child: TextFormFieldCustom(
                           controller: emailController,
                           disableOutlineBorder: false,
                           hintText: 'organisasi.inc@gmail.com',
@@ -99,7 +99,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                       const SizedBox(height: 20),
                       FormContent(
                         title: 'Password',
-                        textFormFieldCustom: TextFormFieldCustom(
+                        child: TextFormFieldCustom(
                           controller: passwordController,
                           disableOutlineBorder: false,
                           hintText: '********',
@@ -109,7 +109,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                       const SizedBox(height: 20),
                       FormContent(
                         title: 'Konfirmasi Password',
-                        textFormFieldCustom: TextFormFieldCustom(
+                        child: TextFormFieldCustom(
                           controller: passwordConfirmationController,
                           disableOutlineBorder: false,
                           hintText: '********',
@@ -143,7 +143,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                       const SizedBox(height: 20),
                       FormContent(
                         title: 'Alamat',
-                        textFormFieldCustom: TextFormFieldCustom(
+                        child: TextFormFieldCustom(
                           controller: addressController,
                           disableOutlineBorder: false,
                           keyboardType: TextInputType.multiline,

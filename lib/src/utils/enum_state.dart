@@ -3,10 +3,16 @@ part 'enum_state.g.dart';
 
 @JsonEnum(alwaysCreate: true)
 enum UserType { relawan, organisasi }
+enum TypeEvent { offline, online }
 
-const Map<UserType, String> userTypeToValue = {
+enum RequestState { empty, loading, loaded, error }
+
+const userTypeToValue = <UserType, String>{
   UserType.relawan: 'relawan',
   UserType.organisasi: 'organisasi',
 };
 
-enum RequestState { empty, loading, loaded, error }
+const typeEventToValue = <TypeEvent, String>{
+  TypeEvent.offline: 'offline',
+  TypeEvent.online: 'online',
+};
