@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
+
+import '../../data/model/user/user_model.dart';
 import '../../data/model/user/user_register_model.dart';
 import '../../utils/utils.dart';
-import '../../data/model/user/user_model.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, User>> login({

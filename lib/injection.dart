@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'src/data/datasource/type_organization_remote_datasource.dart';
 import 'src/data/datasource/user_remote_datasource.dart';
-import 'src/data/repository/user_repository_impl.dart';
 import 'src/data/repository/type_organization_impl.dart';
+import 'src/data/repository/user_repository_impl.dart';
 import 'src/presentasion/riverpod/type_organization/type_organization_notifier.dart';
 import 'src/presentasion/riverpod/user/user_notifier.dart';
 
@@ -13,7 +14,8 @@ final userNotifier = StateNotifierProvider<UserNotifier, UserState>(
 
 final typeOrganizationNotifier =
     StateNotifierProvider<TypeOrganizationNotifier, TypeOrganizationState>(
-        (ref) => TypeOrganizationNotifier(repository: ref.read(_typeOrganizationRepository)));
+  (ref) => TypeOrganizationNotifier(repository: ref.read(_typeOrganizationRepository)),
+);
 
 ///* END RIVERPOD
 

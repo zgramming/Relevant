@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import '../datasource/type_organization_remote_datasource.dart';
-import '../model/type_organization/type_organization_model.dart';
+
 import '../../domain/repository/type_organization_repository.dart';
 import '../../utils/utils.dart';
+import '../datasource/type_organization_remote_datasource.dart';
+import '../model/type_organization/type_organization_model.dart';
 
 class TypeOrganizationRepositoryImpl implements TypeOrganizationRepository {
   const TypeOrganizationRepositoryImpl({

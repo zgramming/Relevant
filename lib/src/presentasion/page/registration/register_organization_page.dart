@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
-import '../welcome/welcome_page.dart';
+
 import '../../../../injection.dart';
 import '../../../data/model/type_organization/type_organization_model.dart';
 import '../../../data/model/user/user_register_model.dart';
-import '../../riverpod/user/user_notifier.dart';
 import '../../../utils/utils.dart';
-
+import '../../riverpod/user/user_notifier.dart';
+import '../welcome/welcome_page.dart';
 import 'widgets/form_content.dart';
 
 class RegisterOrganizationPage extends ConsumerStatefulWidget {
@@ -56,7 +56,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
         );
       } else if (next.state == RequestState.loaded) {
         // GlobalFunction.showSnackBar(context, content: Text('success'));
-        GlobalNavigation.pushNamedAndRemoveUntil(
+        globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
         );

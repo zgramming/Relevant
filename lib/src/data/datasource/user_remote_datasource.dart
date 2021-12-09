@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import '../model/user/user_register_model.dart';
-import '../model/user/user_model.dart';
 
 import '../../utils/utils.dart';
+import '../model/user/user_model.dart';
+import '../model/user/user_register_model.dart';
 
 class UserRemoteDataSource {
   Future<User> login({

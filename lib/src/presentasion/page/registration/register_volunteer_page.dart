@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
-import '../welcome/welcome_page.dart';
+
 import '../../../../injection.dart';
 import '../../../data/model/user/user_register_model.dart';
-import '../../riverpod/user/user_notifier.dart';
 import '../../../utils/utils.dart';
-
+import '../../riverpod/user/user_notifier.dart';
+import '../welcome/welcome_page.dart';
 import 'widgets/form_content.dart';
 
 class RegisterVolunteerPage extends ConsumerStatefulWidget {
@@ -44,7 +44,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
           snackBarType: SnackBarType.error,
         );
       } else if (next.state == RequestState.loaded) {
-        GlobalNavigation.pushNamedAndRemoveUntil(
+        globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
         );

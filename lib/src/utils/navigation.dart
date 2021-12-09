@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class GlobalNavigation {
-  static Future<void> pushNamed({
+  Future<void> pushNamed({
     required String routeName,
     Object? arguments,
   }) async {
@@ -13,7 +13,7 @@ class GlobalNavigation {
     );
   }
 
-  static Future<void> pushNamedAndRemoveUntil({
+  Future<void> pushNamedAndRemoveUntil({
     required String routeName,
     required bool Function(Route<dynamic> route) predicate,
     Object? arguments,
@@ -25,7 +25,7 @@ class GlobalNavigation {
     );
   }
 
-  static void popUntill({
+  void popUntill({
     required bool Function(Route<dynamic> route) predicate,
   }) {
     navigatorKey.currentState?.popUntil(predicate);
@@ -35,3 +35,5 @@ class GlobalNavigation {
     navigatorKey.currentState?.pop();
   }
 }
+
+final globalNavigation = GlobalNavigation();

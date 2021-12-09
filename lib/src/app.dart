@@ -40,15 +40,18 @@ class MyApp extends StatelessWidget {
             );
           case RegisterVolunteerPage.routeNamed:
             return route.slideTransition(
-                screen: (ctx, animation, secondaryAnimation) => const RegisterVolunteerPage());
+              screen: (ctx, animation, secondaryAnimation) => const RegisterVolunteerPage(),
+            );
 
           case RegisterOrganizationPage.routeNamed:
             return route.slideTransition(
-                screen: (ctx, animation, secondaryAnimation) => const RegisterOrganizationPage());
+              screen: (ctx, animation, secondaryAnimation) => const RegisterOrganizationPage(),
+            );
 
           case WelcomePage.routeNamed:
             return route.fadeTransition(
-                screen: (ctx, animation, secondaryAnimation) => const WelcomePage());
+              screen: (ctx, animation, secondaryAnimation) => const WelcomePage(),
+            );
 
           default:
           // return SizedBox();

@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     Future.delayed(
       const Duration(seconds: 1),
-      () => GlobalNavigation.pushNamed(routeName: LoginPage.routeNamed),
+      () => globalNavigation.pushNamed(routeName: LoginPage.routeNamed),
     );
   }
 

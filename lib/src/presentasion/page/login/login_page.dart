@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../injection.dart';
 import 'package:global_template/global_template.dart';
 
-import '../welcome/welcome_page.dart';
+import '../../../../injection.dart';
+import '../../../utils/utils.dart';
+import '../../riverpod/user/user_notifier.dart';
 import '../registration/register_organization_page.dart';
 import '../registration/register_volunteer_page.dart';
-import '../../riverpod/user/user_notifier.dart';
-import '../../../utils/utils.dart';
+import '../welcome/welcome_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   static const routeNamed = '/login-page';
@@ -44,7 +44,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           snackBarType: SnackBarType.error,
         );
       } else if (next.state == RequestState.loaded) {
-        GlobalNavigation.pushNamedAndRemoveUntil(
+        globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
         );
@@ -131,7 +131,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 OutlinedButton(
-                                  onPressed: () async => GlobalNavigation.pushNamed(
+                                  onPressed: () async => globalNavigation.pushNamed(
                                     routeName: RegisterVolunteerPage.routeNamed,
                                   ),
                                   style: ElevatedButton.styleFrom(
@@ -154,7 +154,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(height: 5),
                                 OutlinedButton(
-                                  onPressed: () async => GlobalNavigation.pushNamed(
+                                  onPressed: () async => globalNavigation.pushNamed(
                                     routeName: RegisterOrganizationPage.routeNamed,
                                   ),
                                   style: ElevatedButton.styleFrom(
