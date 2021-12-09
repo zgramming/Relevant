@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:relevant/src/presentasion/page/splash/splash_page.dart';
 
 import 'presentasion/page/login/login_page.dart';
 import 'presentasion/page/registration/register_organization_page.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(color: primary),
         textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
       ),
-      home: const WelcomePage(),
+      home: const SplashPage(),
       onGenerateRoute: (settings) {
         final route = RouteAnimation();
 

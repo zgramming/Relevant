@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'src/data/datasource/category_remote_datasource.dart';
+import 'src/data/datasource/event_remote_datasource.dart';
 import 'src/data/datasource/type_organization_remote_datasource.dart';
 import 'src/data/datasource/user_remote_datasource.dart';
+import 'src/data/repository/event_repository_impl.dart';
 import 'src/data/repository/type_organization_impl.dart';
 import 'src/data/repository/user_repository_impl.dart';
+import 'src/presentasion/riverpod/event/event_notifier.dart';
 import 'src/presentasion/riverpod/type_organization/type_organization_notifier.dart';
 import 'src/presentasion/riverpod/user/user_notifier.dart';
 
@@ -17,6 +21,14 @@ final typeOrganizationNotifier =
   (ref) => TypeOrganizationNotifier(repository: ref.read(_typeOrganizationRepository)),
 );
 
+final categoryNotifier = StateNotifierProvider<CategoryNotifier, CategoryState>(
+  (ref) => CategoryNotifier(repository: ref.read(_categoryRepository)),
+);
+
+final eventNotifier = StateNotifierProvider<EventNotifier, EventState>(
+  (ref) => EventNotifier(repository: ref.read(_eventRepository)),
+);
+
 ///* END RIVERPOD
 
 ///* START REPOSITORY
@@ -25,15 +37,43 @@ final _userRepository = Provider(
 );
 
 final _typeOrganizationRepository = Provider(
-  (ref) =>
-      TypeOrganizationRepositoryImpl(remoteDataSource: ref.read(_typeOrganizationRemoteDataSource)),
+  (ref) => TypeOrganizationRepositoryImpl(
+    remoteDataSource: ref.read(_typeOrganizationRemoteDataSource),
+  ),
+);
+
+final _categoryRepository = Provider(
+  (ref) => CategoryRepositoryImpl(
+    remoteDataSource: ref.read(_categoryRemoteDataSource),
+  ),
+);
+
+final _eventRepository = Provider(
+  (ref) => EventRepositoryImpl(
+    remoteDataSource: ref.read(_eventRemoteDataSource),
+  ),
 );
 
 ///* END REPOSITORY
 
 ///* START Remote DataSource
-final _userRemoteDataSource = Provider((ref) => UserRemoteDataSource());
-final _typeOrganizationRemoteDataSource = Provider((ref) => TypeOrganizationRemoteDataSource());
+final _userRemoteDataSource = Provider(
+  (ref) => UserRemoteDataSource(),
+);
+
+final _typeOrganizationRemoteDataSource = Provider(
+  (ref) => TypeOrganizationRemoteDataSource(),
+);
+
+final _categoryRemoteDataSource = Provider(
+  (ref) => CategoryRemoteDataSource(),
+);
+
+final _eventRemoteDataSource = Provider(
+  (ref) => EventRemoteDataSource(),
+);
+
+
 ///* END Remote DataSource
 
 ///* START Local DataSource

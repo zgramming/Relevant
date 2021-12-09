@@ -11,7 +11,6 @@ class MyBookmarkPage extends StatelessWidget {
       padding: const EdgeInsets.all(24.0),
       separatorBuilder: (context, index) => const SizedBox(height: 20),
       itemCount: 100,
-      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) => Card(
         // ignore: use_named_constants

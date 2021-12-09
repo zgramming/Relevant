@@ -41,6 +41,7 @@ dependencies:
       url: https://github.com/zgramming/Global-Template-null-safety
   google_fonts: ^2.1.0
   http: ^0.13.4
+  image_picker: ^0.8.4+4
   intl: ^0.17.0
   json_annotation: ^4.4.0
   path: ^1.8.0

@@ -3,7 +3,9 @@ part 'enum_state.g.dart';
 
 @JsonEnum(alwaysCreate: true)
 enum UserType { relawan, organisasi }
-enum TypeEvent { offline, online }
+
+@JsonEnum(alwaysCreate: true)
+enum EventType { offline, online }
 
 enum RequestState { empty, loading, loaded, error }
 
@@ -12,7 +14,7 @@ const userTypeToValue = <UserType, String>{
   UserType.organisasi: 'organisasi',
 };
 
-const typeEventToValue = <TypeEvent, String>{
-  TypeEvent.offline: 'offline',
-  TypeEvent.online: 'online',
+const eventTypeToValue = <EventType, String>{
+  EventType.offline: 'offline',
+  EventType.online: 'online',
 };
