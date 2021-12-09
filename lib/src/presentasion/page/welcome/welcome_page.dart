@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relevant/src/presentasion/page/my_event/my_event_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../utils/utils.dart';
@@ -22,7 +23,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   final _screens = const [
     HomePage(),
-    Text('calendar'),
+    MyEventPage(),
     Text('bookmar'),
     Text('alun'),
   ];
@@ -64,19 +65,6 @@ class _WelcomePageState extends State<WelcomePage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),
-    );
-  }
-}
-
-class MyEvent extends StatelessWidget {
-  const MyEvent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TableCalendar(
-      focusedDay: DateTime.now(),
-      firstDay: DateTime(2000),
-      lastDay: DateTime.now(),
     );
   }
 }
