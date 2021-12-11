@@ -21,28 +21,28 @@ class UserNotifier extends StateNotifier<UserState> {
     required String password,
   }) async {
     try {
-      state = state.setActionState(RequestState.loading);
+      state = state.setactionLoginState(RequestState.loading);
       final result = await repository.login(
         email: email,
         password: password,
       );
       state = state.init(result);
-      state = state.setActionState(RequestState.loaded);
+      state = state.setactionLoginState(RequestState.loaded);
     } catch (e) {
       final failure = e as Failure;
       state = state.setMessage(failure.message);
-      state = state.setActionState(RequestState.error);
+      state = state.setactionLoginState(RequestState.error);
     }
   }
 
   Future<void> register(UserRegisterModel user) async {
     try {
-      state = state.setActionState(RequestState.loading);
+      state = state.setactionRegisterState(RequestState.loading);
       final result = await repository.register(user: user);
-      state = state.setActionState(RequestState.loaded);
+      state = state.setactionRegisterState(RequestState.loaded);
       state = state.init(result);
     } catch (e) {
-      state = state.setActionState(RequestState.error);
+      state = state.setactionRegisterState(RequestState.error);
       if (e is Failure) {
         state = state.setMessage(e.message);
       } else {

@@ -36,14 +36,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionState == RequestState.error) {
+      if (next.actionLoginState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.actionState == RequestState.loaded) {
+      } else if (next.actionLoginState == RequestState.loaded) {
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
@@ -97,7 +97,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           Consumer(
                             builder: (context, ref, child) {
                               final actionState = ref.watch(
-                                userNotifier.select((value) => value.actionState),
+                                userNotifier.select(
+                                  (value) => value.actionLoginState,
+                                ),
                               );
 
                               return ElevatedButton(

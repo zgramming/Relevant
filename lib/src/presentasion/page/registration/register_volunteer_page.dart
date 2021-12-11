@@ -36,116 +36,127 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionState == RequestState.error) {
+      if (next.actionRegisterState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.actionState == RequestState.loaded) {
+      } else if (next.actionRegisterState == RequestState.loaded) {
+        GlobalFunction.showSnackBar(
+          context,
+          behaviour: SnackBarBehavior.floating,
+          content: const Text('Berhasil membuat akun relawan'),
+          snackBarType: SnackBarType.success,
+        );
+
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
         );
       }
     });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrasi Relawan'),
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FormContent(
-                      title: 'Nama Lengkap',
-                      child: TextFormFieldCustom(
-                        controller: fullnameController,
-                        disableOutlineBorder: false,
-                        hintText: 'Zeffry Reynando',
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Registrasi Relawan'),
+          centerTitle: true,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FormContent(
+                        title: 'Nama Lengkap',
+                        child: TextFormFieldCustom(
+                          controller: fullnameController,
+                          disableOutlineBorder: false,
+                          hintText: 'Zeffry Reynando',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    FormContent(
-                      title: 'Email',
-                      child: TextFormFieldCustom(
-                        controller: emailController,
-                        disableOutlineBorder: false,
-                        hintText: 'zeffry.reynando@gmail.com',
+                      const SizedBox(height: 20),
+                      FormContent(
+                        title: 'Email',
+                        child: TextFormFieldCustom(
+                          controller: emailController,
+                          disableOutlineBorder: false,
+                          keyboardType: TextInputType.emailAddress,
+                          hintText: 'zeffry.reynando@gmail.com',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    FormContent(
-                      title: 'Password',
-                      child: TextFormFieldCustom(
-                        controller: passwordController,
-                        disableOutlineBorder: false,
-                        hintText: '********',
-                        isPassword: true,
+                      const SizedBox(height: 20),
+                      FormContent(
+                        title: 'Password',
+                        child: TextFormFieldCustom(
+                          controller: passwordController,
+                          disableOutlineBorder: false,
+                          hintText: '********',
+                          isPassword: true,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    FormContent(
-                      title: 'Konfirmasi Password',
-                      child: TextFormFieldCustom(
-                        controller: passwordConfirmationController,
-                        disableOutlineBorder: false,
-                        hintText: '********',
-                        isPassword: true,
+                      const SizedBox(height: 20),
+                      FormContent(
+                        title: 'Konfirmasi Password',
+                        child: TextFormFieldCustom(
+                          controller: passwordConfirmationController,
+                          disableOutlineBorder: false,
+                          hintText: '********',
+                          isPassword: true,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: Consumer(
-              builder: (context, ref, child) {
-                final actionState = ref.watch(
-                  userNotifier.select((value) => value.actionState),
-                );
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final actionRegisterState = ref.watch(
+                    userNotifier.select((value) => value.actionRegisterState),
+                  );
 
-                return ElevatedButton(
-                  onPressed: actionState == RequestState.loading
-                      ? null
-                      : () async {
-                          final model = UserRegisterModel(
-                            name: fullnameController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                            passwordConfirmation: passwordConfirmationController.text,
-                            userType: UserType.relawan,
-                          );
+                  return ElevatedButton(
+                    onPressed: actionRegisterState == RequestState.loading
+                        ? null
+                        : () async {
+                            final model = UserRegisterModel(
+                              name: fullnameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                              passwordConfirmation: passwordConfirmationController.text,
+                              userType: UserType.relawan,
+                            );
 
-                          await ref.read(userNotifier.notifier).register(model);
-                        },
-                  style: ElevatedButton.styleFrom(
-                    primary: primary,
-                    padding: const EdgeInsets.all(16.0),
-                  ),
-                  child: Text(
-                    'Register',
-                    style: latoWhite.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
+                            await ref.read(userNotifier.notifier).register(model);
+                          },
+                    style: ElevatedButton.styleFrom(
+                      primary: primary,
+                      padding: const EdgeInsets.all(16.0),
                     ),
-                  ),
-                );
-              },
+                    child: Text(
+                      'Register',
+                      style: latoWhite.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

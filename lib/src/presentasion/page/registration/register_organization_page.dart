@@ -42,15 +42,14 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionState == RequestState.error) {
+      if (next.actionRegisterState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.actionState == RequestState.loaded) {
-        // GlobalFunction.showSnackBar(context, content: Text('success'));
+      } else if (next.actionRegisterState == RequestState.loaded) {
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
@@ -117,8 +116,11 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                           final _future = ref.watch(futureGetTypeOrganization);
                           return _future.when(
                             data: (_) {
-                              final items = ref
-                                  .watch(typeOrganizationNotifier.select((value) => value.items));
+                              final items = ref.watch(
+                                typeOrganizationNotifier.select(
+                                  (value) => value.items,
+                                ),
+                              );
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
@@ -140,7 +142,9 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                             error: (error, stackTrace) => Center(
                               child: Text((error as Failure).message),
                             ),
-                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           );
                         },
                       ),
@@ -163,14 +167,17 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 24.0,
+              ),
               child: Consumer(
                 builder: (context, ref, child) {
-                  final actionState = ref.watch(
-                    userNotifier.select((value) => value.actionState),
+                  final actionRegisterState = ref.watch(
+                    userNotifier.select((value) => value.actionRegisterState),
                   );
                   return ElevatedButton(
-                    onPressed: actionState == RequestState.loading
+                    onPressed: actionRegisterState == RequestState.loading
                         ? null
                         : () async {
                             final model = UserRegisterModel(
