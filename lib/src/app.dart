@@ -6,7 +6,7 @@ import 'package:global_template/global_template.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'presentasion/page/create_event/create_event_page.dart';
-import 'presentasion/page/home/home_page.dart';
+import 'presentasion/page/event_detail/event_detail_page.dart';
 import 'presentasion/page/login/login_page.dart';
 import 'presentasion/page/registration/register_organization_page.dart';
 import 'presentasion/page/registration/register_volunteer_page.dart';
@@ -61,9 +61,10 @@ class MyApp extends StatelessWidget {
               screen: (ctx, animation, secondaryAnimation) => const CreateEventPage(),
               slidePosition: SlidePosition.fromLeft,
             );
-          case DetailEventPage.routeNamed:
+          case EventDetailPage.routeNamed:
+            final idEvent = settings.arguments! as int;
             return route.fadeTransition(
-              screen: (ctx, animation, secondaryAnimation) => const DetailEventPage(),
+              screen: (ctx, animation, secondaryAnimation) => EventDetailPage(idEvent: idEvent),
             );
 
           default:

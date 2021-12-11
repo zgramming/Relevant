@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../utils/utils.dart';
 import '../model/event/event_create_form_model.dart';
+import '../model/event/event_detail_model.dart';
 import '../model/event/event_for_you_model.dart';
 import '../model/event/event_model.dart';
 import '../model/event/event_nearest_date_model.dart';
@@ -77,6 +78,20 @@ class EventRemoteDataSource {
           )
           .toList();
       return events;
+    } else {
+      final message = decode['message'] as String;
+      throw Exception(message);
+    }
+  }
+
+  Future<EventDetailModel> eventById(int idEvent) async {
+    final url = Uri.parse('$apiUrl/event/$idEvent');
+    final response = await http.get(url);
+    final decode = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode == 200) {
+      final map = decode['data'] as Map<String, dynamic>;
+      final event = EventDetailModel.fromJson(map);
+      return event;
     } else {
       final message = decode['message'] as String;
       throw Exception(message);
