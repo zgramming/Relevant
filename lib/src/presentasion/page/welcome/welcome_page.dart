@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:global_template/global_template.dart';
-import 'package:intl/intl.dart';
 
-import '../../../../injection.dart';
-import '../../../data/model/category/category_model.dart';
-import '../../../data/model/event/event_create_form_model.dart';
 import '../../../utils/utils.dart';
-import '../../riverpod/event/event_notifier.dart';
 import '../home/home_page.dart';
 import '../my_account/my_account_page.dart';
 import '../my_bookmark/my_bookmark_page.dart';
 import '../my_event/my_event_page.dart';
-import '../widgets/form_content.dart';
 
 class WelcomePage extends StatefulWidget {
   static const routeNamed = '/welcome-page';

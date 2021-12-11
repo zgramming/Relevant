@@ -4,10 +4,10 @@ import 'package:global_template/global_template.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection.dart';
-import '../../../data/datasource/category_remote_datasource.dart';
 import '../../../data/model/category/category_model.dart';
 import '../../../data/model/event/event_create_form_model.dart';
 import '../../../utils/utils.dart';
+import '../../riverpod/category/category_notifier.dart';
 import '../../riverpod/event/event_notifier.dart';
 import '../widgets/form_content.dart';
 

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
-
 import '../../domain/repository/user_repository.dart';
 import '../../utils/failure.dart';
 import '../../utils/utils.dart';

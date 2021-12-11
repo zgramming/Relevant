@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:relevant/injection.dart';
 
+import '../../../../injection.dart';
 import '../../../data/model/type_organization/type_organization_model.dart';
 import '../../../domain/repository/type_organization_repository.dart';
 import '../../../utils/utils.dart';
