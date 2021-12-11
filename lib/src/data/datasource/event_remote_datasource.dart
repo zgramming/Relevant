@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 
 import '../../utils/utils.dart';
 import '../model/event/event_create_form_model.dart';
+import '../model/event/event_for_you_model.dart';
 import '../model/event/event_model.dart';
+import '../model/event/event_nearest_date_model.dart';
 
 class EventRemoteDataSource {
   // Future<List<Event>> get() async {}
@@ -38,6 +40,44 @@ class EventRemoteDataSource {
         final errors = decode[VALIDATION_ERROR] as Map<String, dynamic>;
         throw ValidationException(message: errors.values.join('\n'));
       }
+      final message = decode['message'] as String;
+      throw Exception(message);
+    }
+  }
+
+  Future<List<EventNearestDateModel>> nearestDate() async {
+    final url = Uri.parse('$apiUrl/event/nearestDate');
+    final response = await http.get(url);
+    final decode = jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      final list = decode['data'] as List;
+      final events = list
+          .map(
+            (e) => EventNearestDateModel.fromJson(Map<String, dynamic>.from(e as Map)),
+          )
+          .toList();
+      return events;
+    } else {
+      final message = decode['message'] as String;
+      throw Exception(message);
+    }
+  }
+
+  Future<List<EventForYouModel>> forYou() async {
+    final url = Uri.parse('$apiUrl/event/forYou');
+    final response = await http.get(url);
+    final decode = jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      final list = decode['data'] as List;
+      final events = list
+          .map(
+            (e) => EventForYouModel.fromJson(Map<String, dynamic>.from(e as Map)),
+          )
+          .toList();
+      return events;
+    } else {
       final message = decode['message'] as String;
       throw Exception(message);
     }

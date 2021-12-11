@@ -9,6 +9,8 @@ import 'src/data/repository/event_repository_impl.dart';
 import 'src/data/repository/type_organization_impl.dart';
 import 'src/data/repository/user_repository_impl.dart';
 import 'src/presentasion/riverpod/category/category_notifier.dart';
+import 'src/presentasion/riverpod/event/event_for_you_notifier.dart';
+import 'src/presentasion/riverpod/event/event_nearest_date_notifier.dart';
 import 'src/presentasion/riverpod/event/event_notifier.dart';
 import 'src/presentasion/riverpod/type_organization/type_organization_notifier.dart';
 import 'src/presentasion/riverpod/user/user_notifier.dart';
@@ -29,6 +31,15 @@ final categoryNotifier = StateNotifierProvider<CategoryNotifier, CategoryState>(
 
 final eventNotifier = StateNotifierProvider<EventNotifier, EventState>(
   (ref) => EventNotifier(repository: ref.read(_eventRepository)),
+);
+
+final eventNearestDateNotifier =
+    StateNotifierProvider<EventNearestDateNotifier, EventNearestDateState>(
+  (ref) => EventNearestDateNotifier(repository: ref.read(_eventRepository)),
+);
+
+final eventForYouNotifier = StateNotifierProvider<EventForYouNotifier, EventForYouState>(
+  (ref) => EventForYouNotifier(repository: ref.read(_eventRepository)),
 );
 
 ///* END RIVERPOD

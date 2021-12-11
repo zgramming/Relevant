@@ -47,19 +47,15 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
   @override
   Widget build(BuildContext context) {
     ref.listen<EventState>(eventNotifier, (previous, next) {
-      if (next.state == RequestState.error) {
+      if (next.actionState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.state == RequestState.loaded) {
-        // globalNavigation.pushNamedAndRemoveUntil(
-        //   routeName: WelcomePage.routeNamed,
-        //   predicate: (route) => false,
-        // );
-        globalNavigation.pop();
+      } else if (next.actionState == RequestState.loaded) {
+        // globalNavigation.pop();
         GlobalFunction.showSnackBar(
           context,
           content: const Text('Berhasil membuat event'),
