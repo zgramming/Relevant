@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
-
 import '../../domain/repository/type_organization_repository.dart';
 import '../../utils/utils.dart';
 import '../datasource/type_organization_remote_datasource.dart';
@@ -13,14 +11,14 @@ class TypeOrganizationRepositoryImpl implements TypeOrganizationRepository {
   });
   final TypeOrganizationRemoteDataSource remoteDataSource;
   @override
-  Future<Either<Failure, List<TypeOrganization>>> get() async {
+  Future<List<TypeOrganization>> get() async {
     try {
       final result = await remoteDataSource.get();
-      return Right(result);
+      return result;
     } on SocketException catch (_) {
-      return const Left(ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi'));
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } catch (e) {
-      return Left(CommonFailure(e.toString()));
+      throw CommonFailure(e.toString());
     }
   }
 }

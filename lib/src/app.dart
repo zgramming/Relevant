@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'presentasion/page/create_event/create_event_page.dart';
 import 'presentasion/page/home/home_page.dart';
 import 'presentasion/page/login/login_page.dart';
 import 'presentasion/page/registration/register_organization_page.dart';

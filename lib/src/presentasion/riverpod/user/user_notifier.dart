@@ -5,6 +5,7 @@ import '../../../data/model/user/user_model.dart';
 import '../../../data/model/user/user_register_model.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../../../utils/enum_state.dart';
+import '../../../utils/failure.dart';
 
 part 'user_state.dart';
 
@@ -19,37 +20,34 @@ class UserNotifier extends StateNotifier<UserState> {
     required String email,
     required String password,
   }) async {
-    state = state.setState(RequestState.loading);
-    final result = await repository.login(
-      email: email,
-      password: password,
-    );
-
-    result.fold(
-      (failure) {
-        state = state.setMessage(failure.message);
-        state = state.setState(RequestState.error);
-      },
-      (user) {
-        state = state.init(user);
-        state = state.setState(RequestState.loaded);
-      },
-    );
+    try {
+      state = state.setActionState(RequestState.loading);
+      final result = await repository.login(
+        email: email,
+        password: password,
+      );
+      state = state.init(result);
+      state = state.setActionState(RequestState.loaded);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.setMessage(failure.message);
+      state = state.setActionState(RequestState.error);
+    }
   }
 
   Future<void> register(UserRegisterModel user) async {
-    state = state.setState(RequestState.loading);
-    final result = await repository.register(user: user);
-
-    result.fold(
-      (failure) {
-        state = state.setMessage(failure.message);
-        state = state.setState(RequestState.error);
-      },
-      (user) {
-        state = state.init(user);
-        state = state.setState(RequestState.loaded);
-      },
-    );
+    try {
+      state = state.setActionState(RequestState.loading);
+      final result = await repository.register(user: user);
+      state = state.setActionState(RequestState.loaded);
+      state = state.init(result);
+    } catch (e) {
+      state = state.setActionState(RequestState.error);
+      if (e is Failure) {
+        state = state.setMessage(e.message);
+      } else {
+        state = state.setMessage(e.toString());
+      }
+    }
   }
 }

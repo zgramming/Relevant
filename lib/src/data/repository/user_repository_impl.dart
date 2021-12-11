@@ -16,35 +16,35 @@ class UserRepositoryImpl implements UserRepository {
 
   final UserRemoteDataSource remoteDataSource;
   @override
-  Future<Either<Failure, User>> login({
+  Future<User> login({
     required String email,
     required String password,
   }) async {
     try {
       final result = await remoteDataSource.login(email: email, password: password);
-      return Right(result);
+      return result;
     } on SocketException catch (_) {
-      return const Left(ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi'));
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } on ValidationException catch (e) {
-      return Left(ValidationFailure(e.message));
+      throw ValidationFailure(e.message);
     } catch (e) {
-      return Left(CommonFailure(e.toString()));
+      throw CommonFailure(e.toString());
     }
   }
 
   @override
-  Future<Either<Failure, User>> register({
+  Future<User> register({
     required UserRegisterModel user,
   }) async {
     try {
       final result = await remoteDataSource.register(user);
-      return Right(result);
+      return result;
     } on SocketException catch (_) {
-      return const Left(ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi'));
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } on ValidationException catch (e) {
-      return Left(ValidationFailure(e.message));
+      throw ValidationFailure(e.message);
     } catch (e) {
-      return Left(CommonFailure(e.toString()));
+      throw CommonFailure(e.toString());
     }
   }
 }

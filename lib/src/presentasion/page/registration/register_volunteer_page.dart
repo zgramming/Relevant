@@ -36,14 +36,14 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.state == RequestState.error) {
+      if (next.actionState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.state == RequestState.loaded) {
+      } else if (next.actionState == RequestState.loaded) {
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
@@ -110,29 +110,39 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                final model = UserRegisterModel(
-                  name: fullnameController.text,
-                  email: emailController.text,
-                  password: passwordController.text,
-                  passwordConfirmation: passwordConfirmationController.text,
-                  userType: UserType.relawan,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final actionState = ref.watch(
+                  userNotifier.select((value) => value.actionState),
                 );
 
-                await ref.read(userNotifier.notifier).register(model);
+                return ElevatedButton(
+                  onPressed: actionState == RequestState.loading
+                      ? null
+                      : () async {
+                          final model = UserRegisterModel(
+                            name: fullnameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            passwordConfirmation: passwordConfirmationController.text,
+                            userType: UserType.relawan,
+                          );
+
+                          await ref.read(userNotifier.notifier).register(model);
+                        },
+                  style: ElevatedButton.styleFrom(
+                    primary: primary,
+                    padding: const EdgeInsets.all(16.0),
+                  ),
+                  child: Text(
+                    'Register',
+                    style: latoWhite.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                primary: primary,
-                padding: const EdgeInsets.all(16.0),
-              ),
-              child: Text(
-                'Register',
-                style: latoWhite.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),
-              ),
             ),
           ),
         ],

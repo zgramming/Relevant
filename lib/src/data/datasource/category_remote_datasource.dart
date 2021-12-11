@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:relevant/injection.dart';
 
 import '../../utils/utils.dart';
 import '../model/category/category_model.dart';
@@ -36,20 +36,20 @@ class CategoryRepositoryImpl implements CategoryRepository {
   });
   final CategoryRemoteDataSource remoteDataSource;
   @override
-  Future<Either<Failure, List<Category>>> get() async {
+  Future<List<Category>> get() async {
     try {
       final result = await remoteDataSource.get();
-      return Right(result);
+      return result;
     } on SocketException catch (_) {
-      return const Left(ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi'));
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } catch (e) {
-      return Left(CommonFailure(e.toString()));
+      throw CommonFailure(e.toString());
     }
   }
 }
 
 abstract class CategoryRepository {
-  Future<Either<Failure, List<Category>>> get();
+  Future<List<Category>> get();
 }
 
 class CategoryNotifier extends StateNotifier<CategoryState> {
@@ -59,45 +59,29 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
 
   final CategoryRepository repository;
   Future<void> get() async {
-    state = state.setState(RequestState.loading);
     final result = await repository.get();
-
-    result.fold(
-      (failure) {
-        state = state.setMessage(failure.message);
-        state = state.setState(RequestState.error);
-      },
-      (values) {
-        state = state.init(values);
-        state = state.setState(RequestState.loaded);
-      },
-    );
+    state = state.init(result);
   }
 }
+
+final futureGetCategory = FutureProvider.autoDispose((ref) async {
+  await ref.watch(categoryNotifier.notifier).get();
+  return true;
+});
 
 class CategoryState extends Equatable {
   const CategoryState({
     this.items = const [],
-    this.message = '',
-    this.state = RequestState.empty,
   });
   final List<Category> items;
-  final String message;
-  final RequestState state;
 
   CategoryState init(List<Category> values) => copyWith(items: [...values]);
-  CategoryState setMessage(String message) => copyWith(message: message);
-  CategoryState setState(RequestState state) => copyWith(state: state);
 
   CategoryState copyWith({
     List<Category>? items,
-    String? message,
-    RequestState? state,
   }) {
     return CategoryState(
       items: items ?? this.items,
-      message: message ?? this.message,
-      state: state ?? this.state,
     );
   }
 
@@ -105,5 +89,5 @@ class CategoryState extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [items, message, state];
+  List<Object> get props => [items];
 }

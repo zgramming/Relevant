@@ -6,6 +6,7 @@ import '../../../../injection.dart';
 import '../../../data/model/type_organization/type_organization_model.dart';
 import '../../../data/model/user/user_register_model.dart';
 import '../../../utils/utils.dart';
+import '../../riverpod/type_organization/type_organization_notifier.dart';
 import '../../riverpod/user/user_notifier.dart';
 import '../welcome/welcome_page.dart';
 import '../widgets/form_content.dart';
@@ -29,12 +30,6 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
   TypeOrganization? _selectedTypeOrganization;
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => ref.read(typeOrganizationNotifier.notifier).get());
-  }
-
-  @override
   void dispose() {
     nameOrganizationController.dispose();
     emailController.dispose();
@@ -47,14 +42,14 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.state == RequestState.error) {
+      if (next.actionState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.state == RequestState.loaded) {
+      } else if (next.actionState == RequestState.loaded) {
         // GlobalFunction.showSnackBar(context, content: Text('success'));
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
@@ -119,24 +114,33 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                       const SizedBox(height: 20),
                       Consumer(
                         builder: (context, ref, child) {
-                          final items =
-                              ref.watch(typeOrganizationNotifier.select((value) => value.items));
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                'Tipe Organisasi',
-                                style: lato.copyWith(fontSize: 16.0),
-                              ),
-                              const SizedBox(height: 10),
-                              DropdownFormFieldCustom<TypeOrganization>(
-                                items: items,
-                                itemBuilder: (item) => Text('${item?.name}'),
-                                onChanged: (item) => _selectedTypeOrganization = item,
-                                labelText: '',
-                                hint: const Text('Pilih Tipe Organisasi'),
-                              ),
-                            ],
+                          final _future = ref.watch(futureGetTypeOrganization);
+                          return _future.when(
+                            data: (_) {
+                              final items = ref
+                                  .watch(typeOrganizationNotifier.select((value) => value.items));
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'Tipe Organisasi',
+                                    style: lato.copyWith(fontSize: 16.0),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  DropdownFormFieldCustom<TypeOrganization>(
+                                    items: items,
+                                    itemBuilder: (item) => Text('${item?.name}'),
+                                    onChanged: (item) => _selectedTypeOrganization = item,
+                                    labelText: '',
+                                    hint: const Text('Pilih Tipe Organisasi'),
+                                  ),
+                                ],
+                              );
+                            },
+                            error: (error, stackTrace) => Center(
+                              child: Text((error as Failure).message),
+                            ),
+                            loading: () => const Center(child: CircularProgressIndicator()),
                           );
                         },
                       ),
@@ -160,31 +164,40 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  final model = UserRegisterModel(
-                    name: nameOrganizationController.text,
-                    email: emailController.text,
-                    password: passwordController.text,
-                    passwordConfirmation: passwordConfirmationController.text,
-                    userType: UserType.organisasi,
-                    idTypeOrganization: _selectedTypeOrganization?.id,
-                    address: addressController.text,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final actionState = ref.watch(
+                    userNotifier.select((value) => value.actionState),
                   );
+                  return ElevatedButton(
+                    onPressed: actionState == RequestState.loading
+                        ? null
+                        : () async {
+                            final model = UserRegisterModel(
+                              name: nameOrganizationController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                              passwordConfirmation: passwordConfirmationController.text,
+                              userType: UserType.organisasi,
+                              idTypeOrganization: _selectedTypeOrganization?.id,
+                              address: addressController.text,
+                            );
 
-                  await ref.read(userNotifier.notifier).register(model);
+                            await ref.read(userNotifier.notifier).register(model);
+                          },
+                    style: ElevatedButton.styleFrom(
+                      primary: primary,
+                      padding: const EdgeInsets.all(16.0),
+                    ),
+                    child: Text(
+                      'Register',
+                      style: latoWhite.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: primary,
-                  padding: const EdgeInsets.all(16.0),
-                ),
-                child: Text(
-                  'Register',
-                  style: latoWhite.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
               ),
             ),
           ],

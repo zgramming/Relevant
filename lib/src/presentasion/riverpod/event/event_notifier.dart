@@ -13,18 +13,15 @@ class EventNotifier extends StateNotifier<EventState> {
   final EventRepository repository;
 
   Future<void> create(EventCreateFormModel form) async {
-    state = state.setState(RequestState.loading);
-    final result = await repository.create(form);
-
-    result.fold(
-      (failure) {
-        state = state.setMessage(failure.message);
-        state = state.setState(RequestState.error);
-      },
-      (value) {
-        state = state.add(value);
-        state = state.setState(RequestState.loaded);
-      },
-    );
+    try {
+      state = state.setActionState(RequestState.loading);
+      final result = await repository.create(form);
+      state = state.setActionState(RequestState.loaded);
+      state = state.add(result);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.setMessage(failure.message);
+      state = state.setActionState(RequestState.error);
+    }
   }
 }

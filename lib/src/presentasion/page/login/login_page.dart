@@ -36,14 +36,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.state == RequestState.error) {
+      if (next.actionState == RequestState.error) {
         GlobalFunction.showSnackBar(
           context,
           behaviour: SnackBarBehavior.floating,
           content: Text(next.message),
           snackBarType: SnackBarType.error,
         );
-      } else if (next.state == RequestState.loaded) {
+      } else if (next.actionState == RequestState.loaded) {
         globalNavigation.pushNamedAndRemoveUntil(
           routeName: WelcomePage.routeNamed,
           predicate: (route) => false,
@@ -96,13 +96,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const SizedBox(height: 20),
                           Consumer(
                             builder: (context, ref, child) {
+                              final actionState = ref.watch(
+                                userNotifier.select((value) => value.actionState),
+                              );
+
                               return ElevatedButton(
-                                onPressed: () async {
-                                  await ref.read(userNotifier.notifier).login(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                },
+                                onPressed: actionState == RequestState.loading
+                                    ? null
+                                    : () async {
+                                        await ref.read(userNotifier.notifier).login(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            );
+                                      },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(16.0),
                                   primary: primary,

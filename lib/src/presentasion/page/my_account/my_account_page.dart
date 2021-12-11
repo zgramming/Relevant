@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 import '../../../utils/utils.dart';
-import '../welcome/welcome_page.dart';
+import '../create_event/create_event_page.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);

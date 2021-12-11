@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
-
 import '../../domain/repository/event_repository.dart';
 import '../../utils/utils.dart';
 import '../datasource/event_remote_datasource.dart';
@@ -15,16 +13,16 @@ class EventRepositoryImpl implements EventRepository {
   final EventRemoteDataSource remoteDataSource;
 
   @override
-  Future<Either<Failure, Event>> create(EventCreateFormModel form) async {
+  Future<Event> create(EventCreateFormModel form) async {
     try {
       final result = await remoteDataSource.create(form);
-      return Right(result);
+      return result;
     } on SocketException catch (_) {
-      return const Left(ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi'));
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } on ValidationException catch (e) {
-      return Left(ValidationFailure(e.message));
+      throw ValidationFailure(e.message);
     } catch (e) {
-      return Left(CommonFailure(e.toString()));
+      throw CommonFailure(e.toString());
     }
   }
 }
