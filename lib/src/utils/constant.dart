@@ -13,3 +13,4 @@ const VALIDATION_ERROR = 'validation_error';
 
 //? PATH IMAGE
 const pathImageEvent = "$baseUrl/event/image/";
+const pathImageUser = "$baseUrl/user/image/";

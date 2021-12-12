@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../utils/utils.dart';
 
-class UserRegisterModel extends Equatable {
+class UserRegisterFormModel extends Equatable {
   final String name;
   final String email;
   final String password;
@@ -10,7 +10,7 @@ class UserRegisterModel extends Equatable {
   final int? idTypeOrganization;
   final String? address;
 
-  const UserRegisterModel({
+  const UserRegisterFormModel({
     required this.name,
     required this.email,
     required this.password,
@@ -36,7 +36,7 @@ class UserRegisterModel extends Equatable {
   @override
   bool get stringify => true;
 
-  UserRegisterModel copyWith({
+  UserRegisterFormModel copyWith({
     String? name,
     String? email,
     String? password,
@@ -45,7 +45,7 @@ class UserRegisterModel extends Equatable {
     int? idTypeOrganization,
     String? address,
   }) {
-    return UserRegisterModel(
+    return UserRegisterFormModel(
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,

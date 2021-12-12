@@ -8,6 +8,7 @@ import '../../../../injection.dart';
 import '../../../utils/utils.dart';
 import '../create_event/create_event_page.dart';
 import '../login/login_page.dart';
+import '../update_profile/update_profile_page.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);
@@ -25,16 +26,21 @@ class MyAccountPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: ListTile.divideTiles(
                   tiles: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           backgroundColor: primary2,
                           foregroundColor: Colors.white,
                           child: Icon(Icons.person),
                         ),
-                        title: Text('Ubah Profil'),
-                        trailing: Icon(Icons.chevron_right),
+                        title: const Text('Ubah Profil'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () async {
+                          await globalNavigation.pushNamed(
+                            routeName: UpdateProfilePage.routeNamed,
+                          );
+                        },
                       ),
                     ),
                     const Padding(

@@ -5,12 +5,12 @@ import '../../../utils/utils.dart';
 class FormContent extends StatelessWidget {
   const FormContent({
     Key? key,
-    required this.child,
     required this.title,
+    required this.child,
   }) : super(key: key);
 
-  final Widget child;
   final String title;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

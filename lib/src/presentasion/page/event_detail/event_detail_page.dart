@@ -242,10 +242,34 @@ class EventDetailPage extends ConsumerWidget {
                                         final people = event.joinedEvent[index];
                                         return Column(
                                           children: [
-                                            const Expanded(
-                                              child: CircleAvatar(
-                                                backgroundColor: primary3,
-                                                radius: 60.0,
+                                            Expanded(
+                                              child: Container(
+                                                height: sizes.width(context) / 8,
+                                                width: sizes.width(context) / 8,
+                                                decoration: BoxDecoration(
+                                                  color: primary2,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 2.0,
+                                                      color: darkGrey.withOpacity(.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Builder(
+                                                  builder: (_) {
+                                                    if (people.profileRelawan == null) {
+                                                      return const SizedBox();
+                                                    }
+                                                    return ClipOval(
+                                                      child: CachedNetworkImage(
+                                                        imageUrl:
+                                                            pathImageUser + people.profileRelawan!,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                             ),
                                             Padding(

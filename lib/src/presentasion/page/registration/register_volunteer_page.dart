@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
 
 import '../../../../injection.dart';
-import '../../../data/model/user/user_register_model.dart';
+import '../../../data/model/user/user_register_form_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/user/user_notifier.dart';
 import '../welcome/welcome_page.dart';
@@ -130,7 +130,7 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                     onPressed: actionRegisterState == RequestState.loading
                         ? null
                         : () async {
-                            final model = UserRegisterModel(
+                            final model = UserRegisterFormModel(
                               name: fullnameController.text,
                               email: emailController.text,
                               password: passwordController.text,

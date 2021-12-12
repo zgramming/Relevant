@@ -2,7 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/model/user/user_model.dart';
-import '../../../data/model/user/user_register_model.dart';
+import '../../../data/model/user/user_register_form_model.dart';
+import '../../../data/model/user/user_update_form_model.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../../../utils/enum_state.dart';
 import '../../../utils/failure.dart';
@@ -31,33 +32,41 @@ class UserNotifier extends StateNotifier<UserState> {
     required String password,
   }) async {
     try {
-      state = state.setactionLoginState(RequestState.loading);
+      state = state.setActionLoginState(RequestState.loading);
       final result = await repository.login(
         email: email,
         password: password,
       );
       state = state.init(result);
-      state = state.setactionLoginState(RequestState.loaded);
+      state = state.setActionLoginState(RequestState.loaded);
     } catch (e) {
       final failure = e as Failure;
       state = state.setMessage(failure.message);
-      state = state.setactionLoginState(RequestState.error);
+      state = state.setActionLoginState(RequestState.error);
     }
   }
 
-  Future<void> register(UserRegisterModel model) async {
+  Future<void> register(UserRegisterFormModel model) async {
     try {
-      state = state.setactionRegisterState(RequestState.loading);
+      state = state.setActionRegisterState(RequestState.loading);
       final result = await repository.register(model: model);
-      state = state.setactionRegisterState(RequestState.loaded);
+      state = state.setActionRegisterState(RequestState.loaded);
       state = state.init(result);
     } catch (e) {
-      state = state.setactionRegisterState(RequestState.error);
-      if (e is Failure) {
-        state = state.setMessage(e.message);
-      } else {
-        state = state.setMessage(e.toString());
-      }
+      final message = (e as Failure).message;
+      state = state.setActionRegisterState(RequestState.error);
+      state = state.setMessage(message);
+    }
+  }
+
+  Future<void> update(UserUpdateFormModel model) async {
+    try {
+      state = state.setActionUpdateState(RequestState.loading);
+      final result = await repository.update(model: model);
+      state = state.init(result);
+      state = state.setActionUpdateState(RequestState.loaded);
+    } catch (e) {
+      state = state.setActionUpdateState(RequestState.error);
     }
   }
 }

@@ -11,6 +11,7 @@ import 'presentasion/page/login/login_page.dart';
 import 'presentasion/page/registration/register_organization_page.dart';
 import 'presentasion/page/registration/register_volunteer_page.dart';
 import 'presentasion/page/splash/splash_page.dart';
+import 'presentasion/page/update_profile/update_profile_page.dart';
 import 'presentasion/page/welcome/welcome_page.dart';
 import 'utils/utils.dart';
 
@@ -65,6 +66,11 @@ class MyApp extends StatelessWidget {
             final idEvent = settings.arguments! as int;
             return route.fadeTransition(
               screen: (ctx, animation, secondaryAnimation) => EventDetailPage(idEvent: idEvent),
+            );
+
+          case UpdateProfilePage.routeNamed:
+            return route.fadeTransition(
+              screen: (ctx, animation, secondaryAnimation) => const UpdateProfilePage(),
             );
 
           default:

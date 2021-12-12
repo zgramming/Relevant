@@ -4,7 +4,7 @@ import 'package:global_template/global_template.dart';
 
 import '../../../../injection.dart';
 import '../../../data/model/type_organization/type_organization_model.dart';
-import '../../../data/model/user/user_register_model.dart';
+import '../../../data/model/user/user_register_form_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/type_organization/type_organization_notifier.dart';
 import '../../riverpod/user/user_notifier.dart';
@@ -180,7 +180,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                     onPressed: actionRegisterState == RequestState.loading
                         ? null
                         : () async {
-                            final model = UserRegisterModel(
+                            final model = UserRegisterFormModel(
                               name: nameOrganizationController.text,
                               email: emailController.text,
                               password: passwordController.text,

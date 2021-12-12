@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection.dart';
@@ -13,6 +12,7 @@ import '../../../utils/utils.dart';
 import '../../riverpod/category/category_notifier.dart';
 import '../../riverpod/event/event_notifier.dart';
 import '../widgets/form_content.dart';
+import '../widgets/modal_pick_image.dart';
 
 class CreateEventPage extends ConsumerStatefulWidget {
   static const routeNamed = '/create-event-page';
@@ -108,7 +108,7 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                         onTap: () async {
                           await showModalBottomSheet(
                             context: context,
-                            builder: (context) => _ModalBottomPickImage(
+                            builder: (context) => ModalBottomPickImage(
                               onPickImage: (image) => setState(() => _selectedImage = image),
                             ),
                           );
@@ -344,79 +344,6 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _ModalBottomPickImage extends StatelessWidget {
-  const _ModalBottomPickImage({
-    Key? key,
-    required this.onPickImage,
-  }) : super(key: key);
-
-  final Function(File file) onPickImage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Card(
-            // ignore: use_named_constants
-            margin: const EdgeInsets.only(),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListTile(
-                onTap: () async {
-                  final result = await sharedFunction.pickImage(
-                    maxHeight: 1000,
-                    maxWidth: 1000,
-                    imageQuality: 80,
-                    source: ImageSource.gallery,
-                  );
-
-                  if (result != null) {
-                    onPickImage(File(result));
-                  }
-                },
-                leading: const CircleAvatar(
-                  child: Icon(Icons.image),
-                ),
-                title: const Text('Ambil dari gallery'),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Card(
-            // ignore: use_named_constants
-            margin: const EdgeInsets.only(),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListTile(
-                onTap: () async {
-                  final result = await sharedFunction.pickImage(
-                    maxHeight: 1000,
-                    maxWidth: 1000,
-                    imageQuality: 80,
-                  );
-
-                  if (result != null) {
-                    onPickImage(File(result));
-                  }
-                },
-                leading: const CircleAvatar(
-                  child: Icon(Icons.camera),
-                ),
-                title: const Text('Ambil dari camera'),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
       ),
     );
   }
