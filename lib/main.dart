@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/app.dart';
@@ -8,12 +10,32 @@ Future<void> main() async {
   // await initializeDateFormatting();
 
   runApp(
-    const ProviderScope(
-      observers: [],
+    ProviderScope(
+      observers: [
+        Logger(),
+      ],
       // overrides: [],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
+}
+
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(
+    ProviderBase provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    log(
+      '''
+{
+  "provider": "${provider.name ?? provider.runtimeType}",
+  "newValue": "$newValue"
+}''',
+    );
+  }
 }
 
 

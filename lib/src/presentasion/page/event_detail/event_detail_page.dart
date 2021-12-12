@@ -244,19 +244,34 @@ class EventDetailPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                    child: ElevatedButton(
-                      onPressed: () async {},
-                      style: ElevatedButton.styleFrom(
-                        primary: primary,
-                        padding: const EdgeInsets.all(16.0),
-                      ),
-                      child: Text(
-                        'Ikut Event',
-                        style: latoWhite.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final onJoinEventState = ref.watch(
+                          eventDetailNotifier.select((value) => value.onJoinEventState),
+                        );
+                        return ElevatedButton(
+                          onPressed: onJoinEventState == RequestState.loading
+                              ? null
+                              : () async {
+                                  final idUser = ref.read(userNotifier).item.id;
+                                  await ref.read(eventDetailNotifier.notifier).joinEvent(
+                                        idEvent: idEvent,
+                                        idUser: idUser,
+                                      );
+                                },
+                          style: ElevatedButton.styleFrom(
+                            primary: primary,
+                            padding: const EdgeInsets.all(16.0),
+                          ),
+                          child: Text(
+                            event.isAlreadyJoinEvent ? 'Batalkan Ikut' : 'Ikut Event',
+                            style: latoWhite.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

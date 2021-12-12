@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../injection.dart';
 import '../../../data/model/event/event_detail_model.dart';
 import '../../../domain/repository/event_repository.dart';
+import '../../../utils/utils.dart';
 
 part 'event_detail_state.dart';
 
@@ -14,13 +15,34 @@ class EventDetailNotifier extends StateNotifier<EventDetailState> {
 
   final EventRepository repository;
 
-  Future<void> get(int idEvent) async {
-    final result = await repository.eventById(idEvent);
+  Future<void> get({
+    required int idEvent,
+    required int idUser,
+  }) async {
+    final result = await repository.eventById(
+      idEvent: idEvent,
+      idUser: idUser,
+    );
     state = state.init(result);
+  }
+
+  Future<void> joinEvent({
+    required int idEvent,
+    required int idUser,
+  }) async {
+    try {
+      state = state.setOnJoinEventState(RequestState.loading);
+      final result = await repository.joinEvent(idUser: idUser, idEvent: idEvent);
+      state = state.setOnJoinEventSuccess(message: result.message, value: result.eventDetail);
+    } catch (e) {
+      state = state.setOnJoinEventError((e as Failure).message);
+    }
   }
 }
 
-final getEventDetail = AutoDisposeFutureProviderFamily<bool, int>((ref, idEvent) async {
-  await ref.watch(eventDetailNotifier.notifier).get(idEvent);
+final getEventDetail = FutureProvider.autoDispose.family<bool, int>((ref, idEvent) async {
+  final user = ref.watch(userNotifier.select((value) => value.item));
+  await ref.watch(eventDetailNotifier.notifier).get(idEvent: idEvent, idUser: user.id);
+
   return true;
 });

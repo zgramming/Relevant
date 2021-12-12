@@ -25,6 +25,7 @@ class EventDetailModel extends Equatable {
     this.instagramOrganisasi,
     this.totalJoinedEvent = 0,
     this.joinedEvent = const [],
+    this.isAlreadyJoinEvent = false,
   });
 
   final int id;
@@ -41,6 +42,7 @@ class EventDetailModel extends Equatable {
   final String? instagramOrganisasi;
   final int totalJoinedEvent;
   final List<JoinedEventModel> joinedEvent;
+  final bool isAlreadyJoinEvent;
 
   factory EventDetailModel.fromJson(Map<String, dynamic> json) => _$EventDetailModelFromJson(json);
   Map<String, dynamic> toJson() => _$EventDetailModelToJson(this);
@@ -65,6 +67,7 @@ class EventDetailModel extends Equatable {
       instagramOrganisasi,
       totalJoinedEvent,
       joinedEvent,
+      isAlreadyJoinEvent,
     ];
   }
 
@@ -83,6 +86,7 @@ class EventDetailModel extends Equatable {
     String? instagramOrganisasi,
     int? totalJoinedEvent,
     List<JoinedEventModel>? joinedEvent,
+    bool? isAlreadyJoinEvent,
   }) {
     return EventDetailModel(
       id: id ?? this.id,
@@ -99,6 +103,7 @@ class EventDetailModel extends Equatable {
       instagramOrganisasi: instagramOrganisasi ?? this.instagramOrganisasi,
       totalJoinedEvent: totalJoinedEvent ?? this.totalJoinedEvent,
       joinedEvent: joinedEvent ?? this.joinedEvent,
+      isAlreadyJoinEvent: isAlreadyJoinEvent ?? this.isAlreadyJoinEvent,
     );
   }
 }

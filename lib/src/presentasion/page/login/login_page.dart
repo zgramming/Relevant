@@ -191,6 +191,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ],
               ),
             ),
+            // Positioned.fill(
+            //   child: Consumer(builder: (context, ref, child) {
+            //     final result = ref.watch(getEventDetail2);
+            //     return result.when(
+            //       data: (data) => Center(
+            //         child: LinearProgressIndicator(),
+            //       ),
+            //       error: (error, stackTrace) => Center(child: Text(error.toString())),
+            //       loading: () => Center(child: CircularProgressIndicator()),
+            //     );
+            //   }),
+            // ),
           ],
         ),
       ),

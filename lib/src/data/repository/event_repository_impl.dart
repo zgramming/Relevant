@@ -8,6 +8,7 @@ import '../model/event/event_detail_model.dart';
 import '../model/event/event_for_you_model.dart';
 import '../model/event/event_model.dart';
 import '../model/event/event_nearest_date_model.dart';
+import '../model/event/response/event_join_response_model.dart';
 
 class EventRepositoryImpl implements EventRepository {
   EventRepositoryImpl({
@@ -36,8 +37,6 @@ class EventRepositoryImpl implements EventRepository {
       return result;
     } on SocketException catch (_) {
       throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
-    } on ValidationException catch (e) {
-      throw ValidationFailure(e.message);
     } catch (e) {
       throw CommonFailure(e.toString());
     }
@@ -50,17 +49,33 @@ class EventRepositoryImpl implements EventRepository {
       return result;
     } on SocketException catch (_) {
       throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
-    } on ValidationException catch (e) {
-      throw ValidationFailure(e.message);
     } catch (e) {
       throw CommonFailure(e.toString());
     }
   }
 
   @override
-  Future<EventDetailModel> eventById(int idEvent) async {
+  Future<EventDetailModel> eventById({
+    required int idEvent,
+    required int idUser,
+  }) async {
     try {
-      final result = await remoteDataSource.eventById(idEvent);
+      final result = await remoteDataSource.eventById(
+        idEvent: idEvent,
+        idUser: idUser,
+      );
+      return result;
+    } on SocketException catch (_) {
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
+    } catch (e) {
+      throw CommonFailure(e.toString());
+    }
+  }
+
+  @override
+  Future<EventJoinResponseModel> joinEvent({required int idUser, required int idEvent}) async {
+    try {
+      final result = await remoteDataSource.joinEvent(idUser: idUser, idEvent: idEvent);
       return result;
     } on SocketException catch (_) {
       throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');

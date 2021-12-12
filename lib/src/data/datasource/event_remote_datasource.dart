@@ -9,6 +9,7 @@ import '../model/event/event_detail_model.dart';
 import '../model/event/event_for_you_model.dart';
 import '../model/event/event_model.dart';
 import '../model/event/event_nearest_date_model.dart';
+import '../model/event/response/event_join_response_model.dart';
 
 class EventRemoteDataSource {
   // Future<List<Event>> get() async {}
@@ -84,8 +85,11 @@ class EventRemoteDataSource {
     }
   }
 
-  Future<EventDetailModel> eventById(int idEvent) async {
-    final url = Uri.parse('$apiUrl/event/$idEvent');
+  Future<EventDetailModel> eventById({
+    required int idEvent,
+    required int idUser,
+  }) async {
+    final url = Uri.parse('$apiUrl/event/$idEvent/user/$idUser');
     final response = await http.get(url);
     final decode = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode == 200) {
@@ -94,6 +98,32 @@ class EventRemoteDataSource {
       return event;
     } else {
       final message = decode['message'] as String;
+      throw Exception(message);
+    }
+  }
+
+  Future<EventJoinResponseModel> joinEvent({
+    required int idUser,
+    required int idEvent,
+  }) async {
+    final url = Uri.parse('$apiUrl/eventJoined');
+    final body = {
+      'id_user': '$idUser',
+      'id_event': '$idEvent',
+    };
+    final response = await http.post(url, body: body);
+
+    final decode = jsonDecode(response.body) as Map<String, dynamic>;
+    final message = decode['message'] as String;
+
+    if (response.statusCode == 201) {
+      final event = await eventById(idEvent: idEvent, idUser: idUser);
+      return EventJoinResponseModel(eventDetail: event, message: message);
+    } else {
+      if (decode.containsKey(VALIDATION_ERROR)) {
+        final errors = decode[VALIDATION_ERROR] as Map<String, dynamic>;
+        throw ValidationException(message: errors.values.join('\n'));
+      }
       throw Exception(message);
     }
   }
