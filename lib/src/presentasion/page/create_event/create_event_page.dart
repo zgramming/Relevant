@@ -268,7 +268,7 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                                     location: locationController.text,
                                     startDate: startDate!,
                                     endDate: endDate!,
-                                    idOrganization: user.id,
+                                    idOrganization: user?.id ?? 0,
                                     eventType: _selectedEventType,
                                     quota: int.tryParse(quotaController.text) ?? 0,
                                     idCategory: _selectedCategory!.id,

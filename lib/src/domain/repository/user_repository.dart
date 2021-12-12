@@ -8,6 +8,10 @@ abstract class UserRepository {
   });
 
   Future<User> register({
-    required UserRegisterModel user,
+    required UserRegisterModel model,
   });
+
+  Future<User?> initializeUser();
+
+  Future<bool> logout();
 }

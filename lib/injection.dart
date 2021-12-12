@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/data/datasource/category_remote_datasource.dart';
 import 'src/data/datasource/event_remote_datasource.dart';
 import 'src/data/datasource/type_organization_remote_datasource.dart';
+import 'src/data/datasource/user_local_datasource.dart';
 import 'src/data/datasource/user_remote_datasource.dart';
 import 'src/data/repository/category_repository_impl.dart';
 import 'src/data/repository/event_repository_impl.dart';
@@ -51,7 +52,10 @@ final eventDetailNotifier = StateNotifierProvider<EventDetailNotifier, EventDeta
 
 ///* START REPOSITORY
 final _userRepository = Provider(
-  (ref) => UserRepositoryImpl(remoteDataSource: ref.read(_userRemoteDataSource)),
+  (ref) => UserRepositoryImpl(
+    remoteDataSource: ref.read(_userRemoteDataSource),
+    localDataSource: ref.read(_userLocalDataSource),
+  ),
 );
 
 final _typeOrganizationRepository = Provider(
@@ -91,8 +95,10 @@ final _eventRemoteDataSource = Provider(
   (ref) => EventRemoteDataSource(),
 );
 
-
 ///* END Remote DataSource
 
 ///* START Local DataSource
+final _userLocalDataSource = Provider(
+  (ref) => UserLocalDataSource(),
+);
 ///* END Local DataSource

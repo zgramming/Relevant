@@ -42,7 +42,10 @@ class EventDetailNotifier extends StateNotifier<EventDetailState> {
 
 final getEventDetail = FutureProvider.autoDispose.family<bool, int>((ref, idEvent) async {
   final user = ref.watch(userNotifier.select((value) => value.item));
-  await ref.watch(eventDetailNotifier.notifier).get(idEvent: idEvent, idUser: user.id);
+  await ref.watch(eventDetailNotifier.notifier).get(
+        idEvent: idEvent,
+        idUser: user?.id ?? 0,
+      );
 
   return true;
 });

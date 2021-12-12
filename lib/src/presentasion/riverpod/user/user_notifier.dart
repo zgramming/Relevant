@@ -16,6 +16,16 @@ class UserNotifier extends StateNotifier<UserState> {
 
   final UserRepository repository;
 
+  Future<void> initializeUser() async {
+    final user = await repository.initializeUser();
+    state = state.init(user);
+  }
+
+  Future<void> logout() async {
+    await repository.logout();
+    state = state.init(null);
+  }
+
   Future<void> login({
     required String email,
     required String password,
@@ -35,10 +45,10 @@ class UserNotifier extends StateNotifier<UserState> {
     }
   }
 
-  Future<void> register(UserRegisterModel user) async {
+  Future<void> register(UserRegisterModel model) async {
     try {
       state = state.setactionRegisterState(RequestState.loading);
-      final result = await repository.register(user: user);
+      final result = await repository.register(model: model);
       state = state.setactionRegisterState(RequestState.loaded);
       state = state.init(result);
     } catch (e) {

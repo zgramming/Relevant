@@ -253,7 +253,7 @@ class EventDetailPage extends StatelessWidget {
                           onPressed: onJoinEventState == RequestState.loading
                               ? null
                               : () async {
-                                  final idUser = ref.read(userNotifier).item.id;
+                                  final idUser = ref.read(userNotifier).item?.id ?? 0;
                                   await ref.read(eventDetailNotifier.notifier).joinEvent(
                                         idEvent: idEvent,
                                         idUser: idUser,

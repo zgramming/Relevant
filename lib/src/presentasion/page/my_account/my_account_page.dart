@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
 
+import '../../../../injection.dart';
 import '../../../utils/utils.dart';
 import '../create_event/create_event_page.dart';
+import '../login/login_page.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);
@@ -47,9 +52,6 @@ class MyAccountPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
-                        onTap: () async {
-                          await globalNavigation.pushNamed(routeName: CreateEventPage.routeNamed);
-                        },
                         leading: const CircleAvatar(
                           backgroundColor: primary2,
                           foregroundColor: Colors.white,
@@ -58,6 +60,36 @@ class MyAccountPage extends StatelessWidget {
                         title: const Text('Buat Event'),
                         subtitle: const Text('Khusus Organisasi'),
                         trailing: const Icon(Icons.chevron_right),
+                        onTap: () async {
+                          await globalNavigation.pushNamed(routeName: CreateEventPage.routeNamed);
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Consumer(
+                        builder: (context, ref, child) {
+                          return ListTile(
+                            leading: const CircleAvatar(
+                              backgroundColor: primary2,
+                              foregroundColor: Colors.white,
+                              child: Icon(Icons.logout_rounded),
+                            ),
+                            title: const Text('Keluar'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () async {
+                              try {
+                                ref.read(userNotifier.notifier).logout();
+                                globalNavigation.pushNamedAndRemoveUntil(
+                                  routeName: LoginPage.routeNamed,
+                                  predicate: (route) => false,
+                                );
+                              } catch (e, stackTrace) {
+                                log('error ${(e as Failure).message} || $stackTrace');
+                              }
+                            },
+                          );
+                        },
                       ),
                     ),
                   ],
