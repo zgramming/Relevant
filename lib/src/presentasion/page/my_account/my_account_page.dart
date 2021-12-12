@@ -10,11 +10,12 @@ import '../create_event/create_event_page.dart';
 import '../login/login_page.dart';
 import '../update_profile/update_profile_page.dart';
 
-class MyAccountPage extends StatelessWidget {
+class MyAccountPage extends ConsumerWidget {
   const MyAccountPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userNotifier.select((value) => value.item));
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -55,22 +56,23 @@ class MyAccountPage extends StatelessWidget {
                         trailing: Icon(Icons.chevron_right),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: primary2,
-                          foregroundColor: Colors.white,
-                          child: Icon(Icons.perm_contact_calendar),
+                    if (user?.type == UserType.organisasi)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: primary2,
+                            foregroundColor: Colors.white,
+                            child: Icon(Icons.perm_contact_calendar),
+                          ),
+                          title: const Text('Buat Event'),
+                          subtitle: const Text('Khusus Organisasi'),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () async {
+                            await globalNavigation.pushNamed(routeName: CreateEventPage.routeNamed);
+                          },
                         ),
-                        title: const Text('Buat Event'),
-                        subtitle: const Text('Khusus Organisasi'),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () async {
-                          await globalNavigation.pushNamed(routeName: CreateEventPage.routeNamed);
-                        },
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Consumer(
