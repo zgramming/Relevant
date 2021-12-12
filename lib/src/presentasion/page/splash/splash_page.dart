@@ -44,6 +44,11 @@ class SplashPage extends ConsumerWidget {
 }
 
 final _initializeApplication = FutureProvider.autoDispose((ref) async {
+  /// Initialize Bookmark
+  ref.watch(eventBookmarkNotifier.notifier).initialize();
+
+  /// Initialize user should be last to initialize
+  /// Because after this initialize, we should be navigate to [login/welcome] pages
   await ref.watch(userNotifier.notifier).initializeUser();
 
   return true;

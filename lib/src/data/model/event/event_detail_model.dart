@@ -15,6 +15,10 @@ class EventDetailModel extends Equatable {
     this.title = '',
     this.type = EventType.online,
     this.description = '',
+    this.startDate,
+    this.endDate,
+    this.location = '',
+    this.quota = 0,
     this.image,
     this.updatedAt,
     this.namaCategory = '',
@@ -32,6 +36,10 @@ class EventDetailModel extends Equatable {
   final String title;
   final EventType type;
   final String description;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String location;
+  final int quota;
   final String? image;
   final DateTime? updatedAt;
   final String namaCategory;
@@ -57,6 +65,10 @@ class EventDetailModel extends Equatable {
       title,
       type,
       description,
+      startDate,
+      endDate,
+      location,
+      quota,
       image,
       updatedAt,
       namaCategory,
@@ -76,6 +88,10 @@ class EventDetailModel extends Equatable {
     String? title,
     EventType? type,
     String? description,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? location,
+    int? quota,
     String? image,
     DateTime? updatedAt,
     String? namaCategory,
@@ -93,6 +109,10 @@ class EventDetailModel extends Equatable {
       title: title ?? this.title,
       type: type ?? this.type,
       description: description ?? this.description,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      location: location ?? this.location,
+      quota: quota ?? this.quota,
       image: image ?? this.image,
       updatedAt: updatedAt ?? this.updatedAt,
       namaCategory: namaCategory ?? this.namaCategory,

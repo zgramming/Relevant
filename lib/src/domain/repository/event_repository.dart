@@ -1,3 +1,4 @@
+import '../../data/model/event/event_bookmark_model.dart';
 import '../../data/model/event/event_create_form_model.dart';
 import '../../data/model/event/event_detail_model.dart';
 import '../../data/model/event/event_for_you_model.dart';
@@ -18,4 +19,9 @@ abstract class EventRepository {
     required int idUser,
     required int idEvent,
   });
+
+  ///* Local Datasource
+  Future<String> saveBookmark(EventBookmarkModel model);
+  Future<String> deleteBookmark(int id);
+  List<EventBookmarkModel> fetchBookmark();
 }

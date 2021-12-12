@@ -1,16 +1,14 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:hive/hive.dart';
 
 import '../../../utils/utils.dart';
-import 'event_bookmark_model.dart';
+import 'event_for_you_model.dart';
 
-part 'event_for_you_model.g.dart';
+part 'event_bookmark_model.g.dart';
 
-@immutable
-@JsonSerializable(fieldRename: FieldRename.snake)
-class EventForYouModel extends Equatable {
-  const EventForYouModel({
+@HiveType(typeId: 0)
+class EventBookmarkModel extends Equatable {
+  const EventBookmarkModel({
     required this.id,
     required this.title,
     required this.startDate,
@@ -22,21 +20,27 @@ class EventForYouModel extends Equatable {
     required this.namaOrganisasi,
   });
 
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   final DateTime startDate;
+  @HiveField(3)
   final DateTime endDate;
+  @HiveField(4)
   final EventType type;
+  @HiveField(5)
   final int quota;
+  @HiveField(6)
   final String? image;
+  @HiveField(7)
   final String namaCategory;
+  @HiveField(8)
   final String namaOrganisasi;
 
-  factory EventForYouModel.fromJson(Map<String, dynamic> json) => _$EventForYouModelFromJson(json);
-  Map<String, dynamic> toJson() => _$EventForYouModelToJson(this);
-
-  EventBookmarkModel toBookmarkModel() {
-    return EventBookmarkModel(
+  EventForYouModel toEventForYouModel() {
+    return EventForYouModel(
       id: id,
       title: title,
       startDate: startDate,
@@ -49,6 +53,8 @@ class EventForYouModel extends Equatable {
     );
   }
 
+  @override
+  bool get stringify => true;
   @override
   List<Object?> get props {
     return [
@@ -64,7 +70,7 @@ class EventForYouModel extends Equatable {
     ];
   }
 
-  EventForYouModel copyWith({
+  EventBookmarkModel copyWith({
     int? id,
     String? title,
     DateTime? startDate,
@@ -75,7 +81,7 @@ class EventForYouModel extends Equatable {
     String? namaCategory,
     String? namaOrganisasi,
   }) {
-    return EventForYouModel(
+    return EventBookmarkModel(
       id: id ?? this.id,
       title: title ?? this.title,
       startDate: startDate ?? this.startDate,

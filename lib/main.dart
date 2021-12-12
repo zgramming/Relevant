@@ -2,23 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'src/app.dart';
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // await initializeDateFormatting();
-
-  runApp(
-    ProviderScope(
-      observers: [
-        Logger(),
-      ],
-      // overrides: [],
-      child: const MyApp(),
-    ),
-  );
-}
+import 'src/data/model/event/event_bookmark_model.dart';
+import 'src/presentasion/riverpod/global/global_notifier.dart';
+import 'src/utils/utils.dart';
 
 class Logger extends ProviderObserver {
   @override
@@ -38,6 +28,36 @@ class Logger extends ProviderObserver {
   }
 }
 
+///? HiveType Legend :
+///* 0 => EventForYouModel
+///* 1 => EventType
+Future<void> _initHive() async {
+  /// Initialize for first time
+  await Hive.initFlutter();
+
+  /// Initialize Adapter
+  Hive.registerAdapter(EventBookmarkModelAdapter());
+  Hive.registerAdapter(EventTypeAdapter());
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initHive();
+
+  /// Initialize openBox
+  final eventBookmarkBox = await Hive.openBox<EventBookmarkModel>(keyBookmarkHive);
+  runApp(
+    ProviderScope(
+      observers: [
+        Logger(),
+      ],
+      overrides: [
+        boxEventBookmark.overrideWithValue(eventBookmarkBox),
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
 
 // import 'package:equatable/equatable.dart';
 // import 'package:flutter/material.dart';

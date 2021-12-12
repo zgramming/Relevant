@@ -8,15 +8,15 @@ part of 'event_for_you_model.dart';
 
 EventForYouModel _$EventForYouModelFromJson(Map<String, dynamic> json) =>
     EventForYouModel(
-      id: json['id'] as int? ?? 0,
-      title: json['title'] as String? ?? '',
+      id: json['id'] as int,
+      title: json['title'] as String,
       startDate: DateTime.parse(json['start_date'] as String),
       endDate: DateTime.parse(json['end_date'] as String),
       type: $enumDecode(_$EventTypeEnumMap, json['type']),
-      quota: json['quota'] as int? ?? 0,
+      quota: json['quota'] as int,
       image: json['image'] as String?,
-      namaCategory: json['nama_category'] as String? ?? '',
-      namaOrganisasi: json['nama_organisasi'] as String? ?? '',
+      namaCategory: json['nama_category'] as String,
+      namaOrganisasi: json['nama_organisasi'] as String,
     );
 
 Map<String, dynamic> _$EventForYouModelToJson(EventForYouModel instance) =>

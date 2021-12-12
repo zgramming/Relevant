@@ -1,10 +1,19 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'enum_state.g.dart';
 
 @JsonEnum(alwaysCreate: true)
 enum UserType { relawan, organisasi }
 
+@HiveType(typeId: 1)
 @JsonEnum(alwaysCreate: true)
-enum EventType { offline, online }
+enum EventType {
+  @HiveField(0)
+  offline,
+  @HiveField(1)
+  online,
+}
 
 enum RequestState { empty, loading, loaded, error }
 

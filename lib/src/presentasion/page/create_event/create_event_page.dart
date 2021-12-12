@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection.dart';
@@ -32,6 +35,8 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
   Category? _selectedCategory;
   EventType _selectedEventType = EventType.online;
 
+  File? _selectedImage;
+
   @override
   void dispose() {
     titleController.dispose();
@@ -42,6 +47,25 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
     locationController.dispose();
 
     super.dispose();
+  }
+
+  Widget _buildImage() {
+    if (_selectedImage == null) {
+      return Center(
+        child: Transform.scale(
+          scale: 3,
+          child: const Icon(Icons.image, color: Colors.white),
+        ),
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.file(
+          File(_selectedImage!.path),
+          fit: BoxFit.cover,
+        ),
+      );
+    }
   }
 
   @override
@@ -80,17 +104,28 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: primary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: primary4,
-                              blurRadius: 2,
+                      InkWell(
+                        onTap: () async {
+                          await showModalBottomSheet(
+                            context: context,
+                            builder: (context) => _ModalBottomPickImage(
+                              onPickImage: (image) => setState(() => _selectedImage = image),
                             ),
-                          ],
+                          );
+                        },
+                        child: Ink(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: primary,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: primary4,
+                                blurRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: _buildImage(),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -254,11 +289,17 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                             : () async {
                                 try {
                                   if (startDate == null || endDate == null) {
-                                    throw Exception('Tanggal mulai / selesai tidak boleh kosong');
+                                    throw const CommonFailure(
+                                      'Tanggal mulai / selesai tidak boleh kosong',
+                                    );
                                   }
 
                                   if (_selectedCategory == null) {
-                                    throw Exception('Kategori tidak boleh kosong');
+                                    throw const CommonFailure('Kategori tidak boleh kosong');
+                                  }
+
+                                  if (_selectedImage == null) {
+                                    throw const CommonFailure('Gambar belum dipilih');
                                   }
 
                                   final user = ref.read(userNotifier).item;
@@ -272,12 +313,14 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                                     eventType: _selectedEventType,
                                     quota: int.tryParse(quotaController.text) ?? 0,
                                     idCategory: _selectedCategory!.id,
+                                    file: _selectedImage,
                                   );
                                   await ref.read(eventNotifier.notifier).create(form);
                                 } catch (e) {
+                                  final message = (e as Failure).message;
                                   GlobalFunction.showSnackBar(
                                     context,
-                                    content: Text(e.toString()),
+                                    content: Text(message),
                                     snackBarType: SnackBarType.error,
                                   );
                                 }
@@ -301,6 +344,79 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ModalBottomPickImage extends StatelessWidget {
+  const _ModalBottomPickImage({
+    Key? key,
+    required this.onPickImage,
+  }) : super(key: key);
+
+  final Function(File file) onPickImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Card(
+            // ignore: use_named_constants
+            margin: const EdgeInsets.only(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListTile(
+                onTap: () async {
+                  final result = await sharedFunction.pickImage(
+                    maxHeight: 1000,
+                    maxWidth: 1000,
+                    imageQuality: 80,
+                    source: ImageSource.gallery,
+                  );
+
+                  if (result != null) {
+                    onPickImage(File(result));
+                  }
+                },
+                leading: const CircleAvatar(
+                  child: Icon(Icons.image),
+                ),
+                title: const Text('Ambil dari gallery'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Card(
+            // ignore: use_named_constants
+            margin: const EdgeInsets.only(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListTile(
+                onTap: () async {
+                  final result = await sharedFunction.pickImage(
+                    maxHeight: 1000,
+                    maxWidth: 1000,
+                    imageQuality: 80,
+                  );
+
+                  if (result != null) {
+                    onPickImage(File(result));
+                  }
+                },
+                leading: const CircleAvatar(
+                  child: Icon(Icons.camera),
+                ),
+                title: const Text('Ambil dari camera'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

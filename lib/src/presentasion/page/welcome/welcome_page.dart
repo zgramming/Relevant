@@ -43,12 +43,12 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
         ),
         title: const Text('Dashboard'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(Icons.search),
+        //   ),
+        // ],
       ),
       // body: const HomePage(),
       body: IndexedStack(

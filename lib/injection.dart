@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'src/data/datasource/category_remote_datasource.dart';
+import 'src/data/datasource/event_local_datasource.dart';
 import 'src/data/datasource/event_remote_datasource.dart';
 import 'src/data/datasource/type_organization_remote_datasource.dart';
 import 'src/data/datasource/user_local_datasource.dart';
@@ -10,10 +11,12 @@ import 'src/data/repository/event_repository_impl.dart';
 import 'src/data/repository/type_organization_impl.dart';
 import 'src/data/repository/user_repository_impl.dart';
 import 'src/presentasion/riverpod/category/category_notifier.dart';
+import 'src/presentasion/riverpod/event/event_bookmark_notifier.dart';
 import 'src/presentasion/riverpod/event/event_detail_notifier.dart';
 import 'src/presentasion/riverpod/event/event_for_you_notifier.dart';
 import 'src/presentasion/riverpod/event/event_nearest_date_notifier.dart';
 import 'src/presentasion/riverpod/event/event_notifier.dart';
+import 'src/presentasion/riverpod/global/global_notifier.dart';
 import 'src/presentasion/riverpod/type_organization/type_organization_notifier.dart';
 import 'src/presentasion/riverpod/user/user_notifier.dart';
 
@@ -48,6 +51,10 @@ final eventDetailNotifier = StateNotifierProvider<EventDetailNotifier, EventDeta
   (ref) => EventDetailNotifier(repository: ref.read(_eventRepository)),
 );
 
+final eventBookmarkNotifier = StateNotifierProvider<EventBookmarkNotifier, EventBookmarkState>(
+  (ref) => EventBookmarkNotifier(repository: ref.read(_eventRepository)),
+);
+
 ///* END RIVERPOD
 
 ///* START REPOSITORY
@@ -73,6 +80,7 @@ final _categoryRepository = Provider(
 final _eventRepository = Provider(
   (ref) => EventRepositoryImpl(
     remoteDataSource: ref.read(_eventRemoteDataSource),
+    localDataSource: ref.read(_eventLocalDataSource),
   ),
 );
 
@@ -100,5 +108,9 @@ final _eventRemoteDataSource = Provider(
 ///* START Local DataSource
 final _userLocalDataSource = Provider(
   (ref) => UserLocalDataSource(),
+);
+
+final _eventLocalDataSource = Provider(
+  (ref) => EventLocalDataSource(box: ref.read(boxEventBookmark)),
 );
 ///* END Local DataSource
