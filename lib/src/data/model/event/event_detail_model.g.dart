@@ -36,6 +36,10 @@ EventDetailModel _$EventDetailModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => JoinedEventModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isEventExpired: json['is_event_expired'] == null
+          ? false
+          : GlobalFunction.fromJsonIntegerToBoolean(
+              json['is_event_expired'] as int),
       isAlreadyJoinEvent: json['is_already_join_event'] as bool? ?? false,
     );
 
@@ -59,6 +63,8 @@ Map<String, dynamic> _$EventDetailModelToJson(EventDetailModel instance) =>
       'instagram_organisasi': instance.instagramOrganisasi,
       'total_joined_event': instance.totalJoinedEvent,
       'joined_event': instance.joinedEvent,
+      'is_event_expired':
+          GlobalFunction.toJsonIntegerFromBoolean(instance.isEventExpired),
       'is_already_join_event': instance.isAlreadyJoinEvent,
     };
 

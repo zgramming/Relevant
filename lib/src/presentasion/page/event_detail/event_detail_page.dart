@@ -26,6 +26,7 @@ class EventDetailPage extends ConsumerWidget {
         final event = ref.watch(
           eventDetailNotifier.select((value) => value.item),
         );
+
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -347,56 +348,73 @@ class EventDetailPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final _state = ref.watch(
-                      eventDetailNotifier.select((value) => value.state),
-                    );
-                    return ElevatedButton(
-                      onPressed: _state == RequestState.loading
-                          ? null
-                          : () async {
-                              final idUser = ref.read(userNotifier).item?.id ?? 0;
-                              await ref.read(eventDetailNotifier.notifier).joinEvent(
-                                    idEvent: idEvent,
-                                    idUser: idUser,
-                                  );
-
-                              final message = ref.read(eventDetailNotifier).message;
-                              var snackbarType = SnackBarType.normal;
-                              if (_state == RequestState.loaded) {
-                                snackbarType = SnackBarType.success;
-                              }
-                              if (_state == RequestState.error) {
-                                snackbarType = SnackBarType.error;
-                              }
-
-                              Future.delayed(Duration.zero, () {
-                                GlobalFunction.showSnackBar(
-                                  context,
-                                  content: Text(message),
-                                  behaviour: SnackBarBehavior.floating,
-                                  snackBarType: snackbarType,
-                                );
-                              });
-                            },
-                      style: ElevatedButton.styleFrom(
-                        primary: primary,
-                        padding: const EdgeInsets.all(16.0),
-                      ),
-                      child: Text(
-                        event.isAlreadyJoinEvent ? 'Batalkan Ikut' : 'Ikut Event',
-                        style: latoWhite.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    );
-                  },
+              if (event.isEventExpired) ...[
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.all(16.0),
+                      primary: darkGrey400,
+                    ),
+                    child: Text(
+                      'Event sudah lewat',
+                      style: latoPrimary.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-              ),
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final _state = ref.watch(
+                        eventDetailNotifier.select((value) => value.state),
+                      );
+                      return ElevatedButton(
+                        onPressed: _state == RequestState.loading
+                            ? null
+                            : () async {
+                                final idUser = ref.read(userNotifier).item?.id ?? 0;
+                                await ref.read(eventDetailNotifier.notifier).joinEvent(
+                                      idEvent: idEvent,
+                                      idUser: idUser,
+                                    );
+
+                                final message = ref.read(eventDetailNotifier).message;
+                                var snackbarType = SnackBarType.normal;
+                                if (_state == RequestState.loaded) {
+                                  snackbarType = SnackBarType.success;
+                                }
+                                if (_state == RequestState.error) {
+                                  snackbarType = SnackBarType.error;
+                                }
+
+                                Future.delayed(Duration.zero, () {
+                                  GlobalFunction.showSnackBar(
+                                    context,
+                                    content: Text(message),
+                                    behaviour: SnackBarBehavior.floating,
+                                    snackBarType: snackbarType,
+                                  );
+                                });
+                              },
+                        style: ElevatedButton.styleFrom(
+                          primary: primary,
+                          padding: const EdgeInsets.all(16.0),
+                        ),
+                        child: Text(
+                          event.isAlreadyJoinEvent ? 'Batalkan Ikut' : 'Ikut Event',
+                          style: latoWhite.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ]
             ],
           ),
         );

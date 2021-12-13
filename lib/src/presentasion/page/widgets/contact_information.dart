@@ -18,7 +18,7 @@ class ContactInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Ink(
+      child: Container(
         decoration: BoxDecoration(
           color: !isActive ? darkGrey400 : Colors.white,
           borderRadius: BorderRadius.circular(10.0),

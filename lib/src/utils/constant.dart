@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-const baseUrl = kDebugMode ? 'http://192.168.42.227' : '';
+const baseUrl = kDebugMode ? 'http://192.168.42.179' : '';
 const bgLogin = 'assets/images/bg-login.jpg';
 const apiUrl = '$baseUrl/api';
 const indonesiaLocale = 'id_ID';

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:global_template/global_template.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../utils/utils.dart';
@@ -29,6 +30,7 @@ class EventDetailModel extends Equatable {
     this.instagramOrganisasi,
     this.totalJoinedEvent = 0,
     this.joinedEvent = const [],
+    this.isEventExpired = false,
     this.isAlreadyJoinEvent = false,
   });
 
@@ -50,6 +52,11 @@ class EventDetailModel extends Equatable {
   final String? instagramOrganisasi;
   final int totalJoinedEvent;
   final List<JoinedEventModel> joinedEvent;
+  @JsonKey(
+    fromJson: GlobalFunction.fromJsonIntegerToBoolean,
+    toJson: GlobalFunction.toJsonIntegerFromBoolean,
+  )
+  final bool isEventExpired;
   final bool isAlreadyJoinEvent;
 
   factory EventDetailModel.fromJson(Map<String, dynamic> json) => _$EventDetailModelFromJson(json);
@@ -79,6 +86,7 @@ class EventDetailModel extends Equatable {
       instagramOrganisasi,
       totalJoinedEvent,
       joinedEvent,
+      isEventExpired,
       isAlreadyJoinEvent,
     ];
   }
@@ -102,6 +110,7 @@ class EventDetailModel extends Equatable {
     String? instagramOrganisasi,
     int? totalJoinedEvent,
     List<JoinedEventModel>? joinedEvent,
+    bool? isEventExpired,
     bool? isAlreadyJoinEvent,
   }) {
     return EventDetailModel(
@@ -123,6 +132,7 @@ class EventDetailModel extends Equatable {
       instagramOrganisasi: instagramOrganisasi ?? this.instagramOrganisasi,
       totalJoinedEvent: totalJoinedEvent ?? this.totalJoinedEvent,
       joinedEvent: joinedEvent ?? this.joinedEvent,
+      isEventExpired: isEventExpired ?? this.isEventExpired,
       isAlreadyJoinEvent: isAlreadyJoinEvent ?? this.isAlreadyJoinEvent,
     );
   }

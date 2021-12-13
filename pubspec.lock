@@ -320,7 +320,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "62e7e96d84e12bfc0c572c21454beac36c2682e6"
+      resolved-ref: "825b8e29e34b6fd926069eb15bdcd2a1677748c5"
       url: "https://github.com/zgramming/Global-Template-null-safety"
     source: git
     version: "2.0.2"
@@ -883,5 +883,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.14.0 <3.0.0"
+  dart: ">=2.15.0 <3.0.0"
   flutter: ">=2.5.0"
