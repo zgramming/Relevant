@@ -46,6 +46,7 @@ class EventForYouModel extends Equatable {
       image: image,
       namaCategory: namaCategory,
       namaOrganisasi: namaOrganisasi,
+      idUser: 0,
     );
   }
 

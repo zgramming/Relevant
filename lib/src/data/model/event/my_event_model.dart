@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import '../../../utils/utils.dart';
+import 'event_for_you_model.dart';
 
 part 'my_event_model.g.dart';
 
@@ -32,6 +34,20 @@ class MyEventModel extends Equatable {
 
   factory MyEventModel.fromJson(Map<String, dynamic> json) => _$MyEventModelFromJson(json);
   Map<String, dynamic> toJson() => _$MyEventModelToJson(this);
+
+  EventForYouModel toEventForYouModel() {
+    return EventForYouModel(
+      id: id,
+      title: title,
+      startDate: startDate,
+      endDate: endDate,
+      type: type,
+      quota: quota,
+      image: image,
+      namaCategory: namaCategory,
+      namaOrganisasi: namaOrganisasi,
+    );
+  }
 
   @override
   bool get stringify => true;

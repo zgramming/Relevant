@@ -18,38 +18,41 @@ class EventBookmarkModelAdapter extends TypeAdapter<EventBookmarkModel> {
     };
     return EventBookmarkModel(
       id: fields[0] as int,
-      title: fields[1] as String,
-      startDate: fields[2] as DateTime,
-      endDate: fields[3] as DateTime,
-      type: fields[4] as EventType,
-      quota: fields[5] as int,
-      image: fields[6] as String?,
-      namaCategory: fields[7] as String,
-      namaOrganisasi: fields[8] as String,
+      idUser: fields[1] as int,
+      title: fields[2] as String,
+      startDate: fields[3] as DateTime,
+      endDate: fields[4] as DateTime,
+      type: fields[5] as EventType,
+      quota: fields[6] as int,
+      image: fields[7] as String?,
+      namaCategory: fields[8] as String,
+      namaOrganisasi: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, EventBookmarkModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.idUser)
       ..writeByte(2)
-      ..write(obj.startDate)
+      ..write(obj.title)
       ..writeByte(3)
-      ..write(obj.endDate)
+      ..write(obj.startDate)
       ..writeByte(4)
-      ..write(obj.type)
+      ..write(obj.endDate)
       ..writeByte(5)
-      ..write(obj.quota)
+      ..write(obj.type)
       ..writeByte(6)
-      ..write(obj.image)
+      ..write(obj.quota)
       ..writeByte(7)
-      ..write(obj.namaCategory)
+      ..write(obj.image)
       ..writeByte(8)
+      ..write(obj.namaCategory)
+      ..writeByte(9)
       ..write(obj.namaOrganisasi);
   }
 

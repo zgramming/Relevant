@@ -10,6 +10,7 @@ part 'event_bookmark_model.g.dart';
 class EventBookmarkModel extends Equatable {
   const EventBookmarkModel({
     required this.id,
+    required this.idUser,
     required this.title,
     required this.startDate,
     required this.endDate,
@@ -23,20 +24,22 @@ class EventBookmarkModel extends Equatable {
   @HiveField(0)
   final int id;
   @HiveField(1)
-  final String title;
+  final int idUser;
   @HiveField(2)
-  final DateTime startDate;
+  final String title;
   @HiveField(3)
-  final DateTime endDate;
+  final DateTime startDate;
   @HiveField(4)
-  final EventType type;
+  final DateTime endDate;
   @HiveField(5)
-  final int quota;
+  final EventType type;
   @HiveField(6)
-  final String? image;
+  final int quota;
   @HiveField(7)
-  final String namaCategory;
+  final String? image;
   @HiveField(8)
+  final String namaCategory;
+  @HiveField(9)
   final String namaOrganisasi;
 
   EventForYouModel toEventForYouModel() {
@@ -59,6 +62,7 @@ class EventBookmarkModel extends Equatable {
   List<Object?> get props {
     return [
       id,
+      idUser,
       title,
       startDate,
       endDate,
@@ -72,6 +76,7 @@ class EventBookmarkModel extends Equatable {
 
   EventBookmarkModel copyWith({
     int? id,
+    int? idUser,
     String? title,
     DateTime? startDate,
     DateTime? endDate,
@@ -83,6 +88,7 @@ class EventBookmarkModel extends Equatable {
   }) {
     return EventBookmarkModel(
       id: id ?? this.id,
+      idUser: idUser ?? this.idUser,
       title: title ?? this.title,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,

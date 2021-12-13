@@ -51,3 +51,12 @@ final isAlreadyBookmarked = Provider.autoDispose.family<bool, int>((ref, idEvent
       null;
   return result;
 });
+
+final eventBookmarkList = Provider.autoDispose((ref) {
+  final idUser = ref.watch(userNotifier.select((value) => value.item?.id ?? 0));
+  final result = ref
+      .watch(eventBookmarkNotifier.select((value) => value.items))
+      .where((element) => element.idUser == idUser)
+      .toList();
+  return result;
+});

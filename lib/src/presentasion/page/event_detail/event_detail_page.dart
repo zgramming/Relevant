@@ -52,6 +52,7 @@ class EventDetailPage extends ConsumerWidget {
                           image: event.image,
                           namaCategory: event.namaCategory,
                           namaOrganisasi: event.namaOrganisasi,
+                          idUser: ref.read(userNotifier).item?.id ?? 0,
                         );
                         await ref.read(eventBookmarkNotifier.notifier).save(model);
                       }

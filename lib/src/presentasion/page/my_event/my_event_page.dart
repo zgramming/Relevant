@@ -6,6 +6,8 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../injection.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/event/my_event_notifier.dart';
+import '../home/widgets/home_event_for_you_item.dart';
+import '../widgets/modal_bottomsheet_indicator.dart';
 
 class MyEventPage extends ConsumerStatefulWidget {
   const MyEventPage({Key? key}) : super(key: key);
@@ -63,13 +65,18 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
                       titleTextStyle: latoWhite.copyWith(fontWeight: FontWeight.bold),
                       headerMargin: const EdgeInsets.only(bottom: 32.0),
                     ),
-                    onDaySelected: (selectedDay, focusedDay) {
+                    onDaySelected: (selectedDay, focusedDay) async {
                       setState(() {
                         _focusedDay = selectedDay;
                       });
-                      GlobalFunction.showSnackBar(
-                        context,
-                        content: Text(GlobalFunction.formatYMDHMS(focusedDay)),
+
+                      await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                        ),
+                        builder: (context) => ModalMyEvent(date: selectedDay),
                       );
                     },
                     onPageChanged: (focusedDay) {
@@ -96,6 +103,49 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ModalMyEvent extends StatelessWidget {
+  const ModalMyEvent({
+    Key? key,
+    required this.date,
+  }) : super(key: key);
+
+  final DateTime date;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: sizes.height(context) / 1.1),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const ModalBottomSheetIndicator(),
+          Flexible(
+            child: Consumer(
+              builder: (context, ref, child) {
+                final items = ref.watch(myEventByDay(date));
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(16.0),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: HomeEventForYouItem(item: item.toEventForYouModel()),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
