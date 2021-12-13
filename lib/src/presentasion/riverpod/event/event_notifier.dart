@@ -9,13 +9,19 @@ import '../../../utils/utils.dart';
 part 'event_state.dart';
 
 class EventNotifier extends StateNotifier<EventState> {
-  EventNotifier({required this.repository}) : super(const EventState());
+  EventNotifier({
+    required this.repository,
+  }) : super(const EventState());
   final EventRepository repository;
 
   Future<void> create(EventCreateFormModel form) async {
-    state = state.setActionState(RequestState.loading);
-    final result = await repository.create(form);
-    state = state.setActionState(RequestState.loaded);
-    state = state.add(result);
+    try {
+      state = state.onLoadingState(ActionType.post);
+      final result = await repository.create(form);
+      state = state.onSuccessCreateEvent(result);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.onErrorState(failure.message);
+    }
   }
 }

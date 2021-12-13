@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../injection.dart';
 import '../../../data/model/event/event_for_you_model.dart';
 import '../../../domain/repository/event_repository.dart';
+import '../../../utils/utils.dart';
 
 part 'event_for_you_state.dart';
 

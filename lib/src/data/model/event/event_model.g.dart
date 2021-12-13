@@ -12,12 +12,17 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
       idCategory: json['id_category'] as int? ?? 0,
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      startDate: DateTime.parse(json['start_date'] as String),
-      endDate: DateTime.parse(json['end_date'] as String),
+      startDate: json['start_date'] == null
+          ? null
+          : DateTime.parse(json['start_date'] as String),
+      endDate: json['end_date'] == null
+          ? null
+          : DateTime.parse(json['end_date'] as String),
       location: json['location'] as String? ?? '',
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      type: $enumDecode(_$EventTypeEnumMap, json['type']),
+      type: $enumDecodeNullable(_$EventTypeEnumMap, json['type']) ??
+          EventType.offline,
       quota: json['quota'] as int? ?? 0,
       image: json['image'] as String?,
       createdAt: json['created_at'] == null
@@ -34,8 +39,8 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'id_category': instance.idCategory,
       'title': instance.title,
       'description': instance.description,
-      'start_date': instance.startDate.toIso8601String(),
-      'end_date': instance.endDate.toIso8601String(),
+      'start_date': instance.startDate?.toIso8601String(),
+      'end_date': instance.endDate?.toIso8601String(),
       'location': instance.location,
       'latitude': instance.latitude,
       'longitude': instance.longitude,

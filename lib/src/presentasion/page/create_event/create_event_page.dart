@@ -10,7 +10,6 @@ import '../../../data/model/category/category_model.dart';
 import '../../../data/model/event/event_create_form_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/category/category_notifier.dart';
-import '../../riverpod/event/event_notifier.dart';
 import '../widgets/form_content.dart';
 import '../widgets/modal_pick_image.dart';
 
@@ -70,23 +69,6 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<EventState>(eventNotifier, (previous, next) {
-      if (next.actionState == RequestState.error) {
-        GlobalFunction.showSnackBar(
-          context,
-          behaviour: SnackBarBehavior.floating,
-          content: Text(next.message),
-          snackBarType: SnackBarType.error,
-        );
-      } else if (next.actionState == RequestState.loaded) {
-        // globalNavigation.pop();
-        GlobalFunction.showSnackBar(
-          context,
-          content: const Text('Berhasil membuat event'),
-          snackBarType: SnackBarType.success,
-        );
-      }
-    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -280,26 +262,26 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
                   child: Consumer(
                     builder: (context, ref, child) {
-                      final actionState = ref.watch(
-                        eventNotifier.select((value) => value.actionState),
+                      final _state = ref.watch(
+                        eventNotifier.select((value) => value.state),
                       );
                       return ElevatedButton(
-                        onPressed: actionState == RequestState.loading
+                        onPressed: _state == RequestState.loading
                             ? null
                             : () async {
                                 try {
                                   if (startDate == null || endDate == null) {
-                                    throw const CommonFailure(
+                                    throw Exception(
                                       'Tanggal mulai / selesai tidak boleh kosong',
                                     );
                                   }
 
                                   if (_selectedCategory == null) {
-                                    throw const CommonFailure('Kategori tidak boleh kosong');
+                                    throw Exception('Kategori tidak boleh kosong');
                                   }
 
                                   if (_selectedImage == null) {
-                                    throw const CommonFailure('Gambar belum dipilih');
+                                    throw Exception('Gambar belum dipilih');
                                   }
 
                                   final user = ref.read(userNotifier).item;
@@ -315,12 +297,34 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                                     idCategory: _selectedCategory!.id,
                                     file: _selectedImage,
                                   );
+
                                   await ref.read(eventNotifier.notifier).create(form);
+                                  final message = ref.read(eventNotifier).message;
+
+                                  if (_state == RequestState.loaded) {
+                                    Future.delayed(Duration.zero, () {
+                                      GlobalFunction.showSnackBar(
+                                        context,
+                                        content: Text(message),
+                                        behaviour: SnackBarBehavior.floating,
+                                        snackBarType: SnackBarType.success,
+                                      );
+                                    });
+                                    globalNavigation.pop();
+                                  } else if (_state == RequestState.error) {
+                                    Future.delayed(Duration.zero, () {
+                                      GlobalFunction.showSnackBar(
+                                        context,
+                                        content: Text(message),
+                                        behaviour: SnackBarBehavior.floating,
+                                        snackBarType: SnackBarType.error,
+                                      );
+                                    });
+                                  }
                                 } catch (e) {
-                                  final message = (e as Failure).message;
                                   GlobalFunction.showSnackBar(
                                     context,
-                                    content: Text(message),
+                                    content: Text(e.toString()),
                                     snackBarType: SnackBarType.error,
                                   );
                                 }

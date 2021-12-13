@@ -18,8 +18,10 @@ class EventBookmarkState extends Equatable {
         state: RequestState.loading,
         actionType: actionType,
       );
-  EventBookmarkState onErrorState(String message) =>
-      copyWith(state: RequestState.error, message: message);
+  EventBookmarkState onErrorState(String message) => copyWith(
+        state: RequestState.error,
+        message: message,
+      );
 
   EventBookmarkState onSuccessSave({
     required EventBookmarkModel value,

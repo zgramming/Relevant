@@ -13,8 +13,8 @@ class Event extends Equatable {
   final int idCategory;
   final String title;
   final String description;
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
   final String location;
   final double? latitude;
   final double? longitude;
@@ -30,12 +30,12 @@ class Event extends Equatable {
     this.idCategory = 0,
     this.title = '',
     this.description = '',
-    required this.startDate,
-    required this.endDate,
+    this.startDate,
+    this.endDate,
     this.location = '',
     this.latitude,
     this.longitude,
-    required this.type,
+    this.type = EventType.offline,
     this.quota = 0,
     this.image,
     this.createdAt,

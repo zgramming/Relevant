@@ -19,8 +19,10 @@ class EventDetailState extends Equatable {
         state: RequestState.loading,
         actionType: actionType,
       );
-  EventDetailState onErrorState(String message) =>
-      copyWith(state: RequestState.error, message: message);
+  EventDetailState onErrorState(String message) => copyWith(
+        state: RequestState.error,
+        message: message,
+      );
 
   EventDetailState onSuccessJoinEvent({
     required String message,

@@ -5,6 +5,7 @@ import '../../../../injection.dart';
 import '../../../data/model/event/my_event_model.dart';
 import '../../../data/model/event/query_filter/my_event_query_model.dart';
 import '../../../domain/repository/event_repository.dart';
+import '../../../utils/utils.dart';
 
 part 'my_event_state.dart';
 

@@ -2,41 +2,47 @@ part of 'event_notifier.dart';
 
 class EventState extends Equatable {
   const EventState({
-    this.items = const [],
+    this.item = const Event(),
     this.message = '',
     this.state = RequestState.empty,
-    this.actionState = RequestState.empty,
+    this.actionType = ActionType.empty,
   });
 
-  final List<Event> items;
+  final Event item;
   final String message;
   final RequestState state;
-  final RequestState actionState;
+  final ActionType actionType;
 
-  EventState init(List<Event> values) => copyWith(items: [...values]);
-  EventState add(Event value) => copyWith(items: [...items, value]);
-
-  EventState setMessage(String message) => copyWith(message: message);
-  EventState setState(RequestState state) => copyWith(state: state);
-  EventState setActionState(RequestState state) => copyWith(actionState: state);
+  EventState onLoadingState(ActionType actionType) => copyWith(
+        state: RequestState.loading,
+        actionType: actionType,
+      );
+  EventState onErrorState(String message) => copyWith(
+        state: RequestState.error,
+        message: message,
+      );
+  EventState onSuccessCreateEvent(Event event) => copyWith(
+        state: RequestState.loaded,
+        item: event,
+      );
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object> get props => [items, message, state, actionState];
+  List<Object> get props => [item, message, state, actionType];
 
   EventState copyWith({
-    List<Event>? items,
+    Event? item,
     String? message,
     RequestState? state,
-    RequestState? actionState,
+    ActionType? actionType,
   }) {
     return EventState(
-      items: items ?? this.items,
+      item: item ?? this.item,
       message: message ?? this.message,
       state: state ?? this.state,
-      actionState: actionState ?? this.actionState,
+      actionType: actionType ?? this.actionType,
     );
   }
 }
