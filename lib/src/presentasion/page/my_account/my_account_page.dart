@@ -149,8 +149,8 @@ class MyAccountPage extends ConsumerWidget {
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () async {
                               try {
-                                ref.read(userNotifier.notifier).logout();
-                                globalNavigation.pushNamedAndRemoveUntil(
+                                await ref.read(userNotifier.notifier).logout();
+                                await globalNavigation.pushNamedAndRemoveUntil(
                                   routeName: LoginPage.routeNamed,
                                   predicate: (route) => false,
                                 );
