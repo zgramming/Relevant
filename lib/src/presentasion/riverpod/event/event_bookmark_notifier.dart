@@ -28,7 +28,7 @@ class EventBookmarkNotifier extends StateNotifier<EventBookmarkState> {
       state = state.onSuccessSave(value: model, message: result);
     } catch (e) {
       final failure = e as Failure;
-      state = state.onErrorActionState(failure.message);
+      state = state.onErrorState(failure.message);
     }
   }
 
@@ -39,7 +39,7 @@ class EventBookmarkNotifier extends StateNotifier<EventBookmarkState> {
       state = state.onSuccessDelete(idEvent: id, message: message);
     } catch (e) {
       final failure = e as Failure;
-      state = state.onErrorActionState(failure.message);
+      state = state.onErrorState(failure.message);
     }
   }
 }
