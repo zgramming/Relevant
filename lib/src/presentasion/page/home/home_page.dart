@@ -9,13 +9,13 @@ import '../../riverpod/event/event_nearest_date_notifier.dart';
 import 'widgets/home_event_for_you_item.dart';
 import 'widgets/home_event_nearest_date_item.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(24.0),

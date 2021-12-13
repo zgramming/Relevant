@@ -21,7 +21,6 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
     return RefreshIndicator(
       onRefresh: () async => ref.refresh(myEventNotifier),
       child: SingleChildScrollView(
-        // physics: const NeverScrollableScrollPhysics(),
         child: SizedBox(
           height: sizes.screenHeightMinusAppBarAndStatusBar(context),
           child: Stack(

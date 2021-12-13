@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,45 +34,49 @@ class EventDetailPage extends ConsumerWidget {
               Consumer(
                 builder: (context, ref, child) {
                   final _isAlreadyBookmarked = ref.watch(isAlreadyBookmarked(idEvent));
+                  final _state = ref.watch(eventBookmarkNotifier.select((value) => value.state));
                   return IconButton(
                     onPressed: () async {
-                      try {
-                        var message = '';
-                        if (_isAlreadyBookmarked) {
-                          /// Remove
-                          message = await ref.read(eventBookmarkNotifier.notifier).delete(idEvent);
-                        } else {
-                          /// Insert
-                          final model = EventBookmarkModel(
-                            id: event.id,
-                            title: event.title,
-                            startDate: DateTime.now(),
-                            endDate: DateTime.now(),
-                            type: event.type,
-                            quota: 0,
-                            image: event.image,
-                            namaCategory: event.namaCategory,
-                            namaOrganisasi: event.namaOrganisasi,
-                          );
-                          message = await ref.read(eventBookmarkNotifier.notifier).save(model);
-                        }
+                      if (_isAlreadyBookmarked) {
+                        /// Remove
+                        await ref.read(eventBookmarkNotifier.notifier).delete(idEvent);
+                      } else {
+                        /// Insert
+                        final model = EventBookmarkModel(
+                          id: event.id,
+                          title: event.title,
+                          startDate: DateTime.now(),
+                          endDate: DateTime.now(),
+                          type: event.type,
+                          quota: 0,
+                          image: event.image,
+                          namaCategory: event.namaCategory,
+                          namaOrganisasi: event.namaOrganisasi,
+                        );
+                        await ref.read(eventBookmarkNotifier.notifier).save(model);
+                      }
 
-                        Future.delayed(Duration.zero, () {
-                          GlobalFunction.showSnackBar(
-                            context,
-                            content: Text(message),
-                            snackBarType: SnackBarType.info,
-                          );
-                        });
-                      } catch (e, stackTrace) {
-                        final message = (e as Failure).message;
-                        log('Message $message || $stackTrace');
-                        GlobalFunction.showSnackBar(
+                      final message = ref.read(eventBookmarkNotifier).message;
+
+                      var snackbarType = SnackBarType.normal;
+
+                      if (_state == RequestState.loaded) {
+                        snackbarType = SnackBarType.success;
+                      }
+
+                      if (_state == RequestState.error) {
+                        snackbarType = SnackBarType.error;
+                      }
+
+                      Future.delayed(
+                        Duration.zero,
+                        () => GlobalFunction.showSnackBar(
                           context,
                           content: Text(message),
-                          snackBarType: SnackBarType.error,
-                        );
-                      }
+                          snackBarType: snackbarType,
+                          behaviour: SnackBarBehavior.floating,
+                        ),
+                      );
                     },
                     icon: Icon(
                       _isAlreadyBookmarked ? Icons.bookmark_sharp : Icons.bookmark_add_outlined,

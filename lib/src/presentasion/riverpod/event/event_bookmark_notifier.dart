@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../injection.dart';
 import '../../../data/model/event/event_bookmark_model.dart';
 import '../../../domain/repository/event_repository.dart';
+import '../../../utils/utils.dart';
 
 part 'event_bookmark_state.dart';
 
@@ -20,16 +21,26 @@ class EventBookmarkNotifier extends StateNotifier<EventBookmarkState> {
     state = state.init(result);
   }
 
-  Future<String> save(EventBookmarkModel model) async {
-    final message = await repository.saveBookmark(model);
-    state = state.add(model);
-    return message;
+  Future<void> save(EventBookmarkModel model) async {
+    try {
+      state = state.onLoadingState(ActionType.create);
+      final result = await repository.saveBookmark(model);
+      state = state.onSuccessSave(value: model, message: result);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.onErrorActionState(failure.message);
+    }
   }
 
-  Future<String> delete(int id) async {
-    final message = await repository.deleteBookmark(id);
-    state = state.delete(id);
-    return message;
+  Future<void> delete(int id) async {
+    try {
+      state = state.onLoadingState(ActionType.delete);
+      final message = await repository.deleteBookmark(id);
+      state = state.onSuccessDelete(idEvent: id, message: message);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.onErrorActionState(failure.message);
+    }
   }
 }
 
