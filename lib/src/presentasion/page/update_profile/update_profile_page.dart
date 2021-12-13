@@ -59,6 +59,8 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
     whatsappContactController = TextEditingController(text: '${user.whatsappContact}');
     emailContactController = TextEditingController(text: '${user.emailContact}');
     instagramContactController = TextEditingController(text: '${user.instagramContact}');
+
+    _selectedBirthDate = _user.birthDate;
   }
 
   @override
@@ -165,24 +167,9 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                           ),
                           child: Builder(
                             builder: (context) {
-                              if (_user.type == UserType.relawan && _user.pictureProfile != null) {
-                                return ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: pathImageUser + _user.pictureProfile!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              }
-
-                              if (_user.type == UserType.organisasi && _user.logo != null) {
-                                return ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: pathImageUser + _user.logo!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              }
-
+                              /// Order for show image
+                              /// 1. From File Device
+                              /// 2. From Network Image
                               if (_selectedLogo != null) {
                                 return ClipOval(
                                   child: Image.file(File(_selectedLogo!.path), fit: BoxFit.cover),
@@ -193,6 +180,30 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                                 return ClipOval(
                                   child: Image.file(
                                     File(_selectedPictureProfile!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }
+
+                              if (_user.type == UserType.relawan && _user.pictureProfile != null) {
+                                return ClipOval(
+                                  child: CachedNetworkImage(
+                                    key: ValueKey(_user.pictureProfile),
+                                    imageUrl: pathImageUser +
+                                        _user.pictureProfile! +
+                                        '?v=${DateTime.now().millisecondsSinceEpoch}',
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }
+
+                              if (_user.type == UserType.organisasi && _user.logo != null) {
+                                return ClipOval(
+                                  child: CachedNetworkImage(
+                                    key: ValueKey(_user.pictureProfile),
+                                    imageUrl: pathImageUser +
+                                        _user.logo! +
+                                        '?v=${DateTime.now().millisecondsSinceEpoch}',
                                     fit: BoxFit.cover,
                                   ),
                                 );

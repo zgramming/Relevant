@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import '../../domain/repository/user_repository.dart';
-import '../../utils/failure.dart';
 import '../../utils/utils.dart';
 import '../datasource/user_local_datasource.dart';
 import '../datasource/user_remote_datasource.dart';
