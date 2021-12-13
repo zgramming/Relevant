@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../utils/utils.dart';
+import '../../riverpod/global/global_notifier.dart';
 import '../home/home_page.dart';
 import '../my_account/my_account_page.dart';
 import '../my_bookmark/my_bookmark_page.dart';
@@ -42,29 +44,56 @@ class _WelcomePageState extends State<WelcomePage> {
             backgroundColor: Colors.white,
           ),
         ),
-        title: const Text('Dashboard'),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {},
-        //     icon: const Icon(Icons.search),
-        //   ),
-        // ],
+        title: Consumer(
+          builder: (context, ref, child) {
+            final _title = ref.watch(appBarTitle);
+            return Text(
+              _title,
+              style: lato.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
       ),
       // body: const HomePage(),
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (value) => setState(() => _selectedIndex = value),
-        items: _items,
-        backgroundColor: primary,
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.white,
-        unselectedItemColor: Colors.white.withOpacity(.5),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+      bottomNavigationBar: Consumer(
+        builder: (context, ref, child) => BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (value) {
+            setState(() {
+              _selectedIndex = value;
+            });
+            var title = '';
+            switch (value) {
+              case 0:
+                title = 'Dashboard';
+                break;
+              case 1:
+                title = 'EventKu';
+                break;
+              case 2:
+                title = 'BookmarkKu';
+                break;
+              case 3:
+                title = 'ProfileKu';
+                break;
+              default:
+            }
+            ref.read(appBarTitle.state).update((state) => title);
+          },
+          items: _items,
+          backgroundColor: primary,
+          type: BottomNavigationBarType.fixed,
+          fixedColor: Colors.white,
+          unselectedItemColor: Colors.white.withOpacity(.5),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+        ),
       ),
     );
   }
