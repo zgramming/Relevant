@@ -189,9 +189,8 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                                 return ClipOval(
                                   child: CachedNetworkImage(
                                     key: ValueKey(_user.pictureProfile),
-                                    imageUrl: pathImageUser +
-                                        _user.pictureProfile! +
-                                        '?v=${DateTime.now().millisecondsSinceEpoch}',
+                                    imageUrl:
+                                        '$pathImageUser${_user.pictureProfile!}?v=${DateTime.now().millisecondsSinceEpoch}',
                                     fit: BoxFit.cover,
                                   ),
                                 );
@@ -201,9 +200,8 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                                 return ClipOval(
                                   child: CachedNetworkImage(
                                     key: ValueKey(_user.pictureProfile),
-                                    imageUrl: pathImageUser +
-                                        _user.logo! +
-                                        '?v=${DateTime.now().millisecondsSinceEpoch}',
+                                    imageUrl:
+                                        '$pathImageUser${_user.logo!}?v=${DateTime.now().millisecondsSinceEpoch}',
                                     fit: BoxFit.cover,
                                   ),
                                 );

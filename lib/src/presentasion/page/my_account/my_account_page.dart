@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_template/global_template.dart';
 
 import '../../../../injection.dart';
 import '../../../utils/utils.dart';
+import '../change_password/change_password_page.dart';
 import '../create_event/create_event_page.dart';
 import '../login/login_page.dart';
 import '../update_profile/update_profile_page.dart';
@@ -21,6 +23,61 @@ class MyAccountPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Card(
+            // ignore: use_named_constants
+            margin: const EdgeInsets.only(),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final user = ref.watch(
+                    userNotifier.select((value) => value.item),
+                  );
+
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: primary,
+                      radius: 30.0,
+                      child: ClipOval(
+                        child: Builder(
+                          builder: (context) {
+                            final imageUrl =
+                                user?.type == UserType.relawan ? user?.pictureProfile : user?.logo;
+                            return CachedNetworkImage(
+                              imageUrl:
+                                  '$pathImageUser${imageUrl ?? ''}?v=${DateTime.now().millisecondsSinceEpoch}',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    title: Text(user?.name ?? ''),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(user?.type.name ?? ''),
+                        const SizedBox(height: 10),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(text: 'Terakhir update : '),
+                              TextSpan(text: GlobalFunction.formatYMDHM(user!.updatedAt!))
+                            ],
+                          ),
+                          style: lato.copyWith(
+                            fontSize: 10.0,
+                            color: darkGrey400,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -44,16 +101,21 @@ class MyAccountPage extends ConsumerWidget {
                         },
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
-                        leading: CircleAvatar(
+                        onTap: () async {
+                          await globalNavigation.pushNamed(
+                            routeName: ChangePasswordPage.routeNamed,
+                          );
+                        },
+                        leading: const CircleAvatar(
                           backgroundColor: primary2,
                           foregroundColor: Colors.white,
                           child: Icon(Icons.lock),
                         ),
-                        title: Text('Ubah Password'),
-                        trailing: Icon(Icons.chevron_right),
+                        title: const Text('Ubah Password'),
+                        trailing: const Icon(Icons.chevron_right),
                       ),
                     ),
                     if (user?.type == UserType.organisasi)

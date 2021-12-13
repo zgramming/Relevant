@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'presentasion/page/change_password/change_password_page.dart';
 import 'presentasion/page/create_event/create_event_page.dart';
 import 'presentasion/page/event_detail/event_detail_page.dart';
 import 'presentasion/page/login/login_page.dart';
@@ -69,6 +70,11 @@ class MyApp extends StatelessWidget {
           case UpdateProfilePage.routeNamed:
             return route.fadeTransition(
               screen: (ctx, animation, secondaryAnimation) => const UpdateProfilePage(),
+            );
+
+          case ChangePasswordPage.routeNamed:
+            return route.fadeTransition(
+              screen: (ctx, animation, secondaryAnimation) => const ChangePasswordPage(),
             );
 
           default:

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/model/user/user_change_password_form_model.dart';
 import '../../../data/model/user/user_model.dart';
 import '../../../data/model/user/user_register_form_model.dart';
 import '../../../data/model/user/user_update_form_model.dart';
@@ -53,9 +54,9 @@ class UserNotifier extends StateNotifier<UserState> {
       state = state.setActionRegisterState(RequestState.loaded);
       state = state.init(result);
     } catch (e) {
-      final message = (e as Failure).message;
+      final failure = e as Failure;
       state = state.setActionRegisterState(RequestState.error);
-      state = state.setMessage(message);
+      state = state.setMessage(failure.message);
     }
   }
 
@@ -66,7 +67,24 @@ class UserNotifier extends StateNotifier<UserState> {
       state = state.init(result);
       state = state.setActionUpdateState(RequestState.loaded);
     } catch (e) {
+      final failure = e as Failure;
       state = state.setActionUpdateState(RequestState.error);
+      state = state.setMessage(failure.message);
+    }
+  }
+
+  Future<void> changePassword({
+    required UserChangePasswordFormModel model,
+  }) async {
+    try {
+      state = state.setActionChangePasswordState(RequestState.loading);
+      final result = await repository.changePassword(model);
+      state = state.init(result);
+      state = state.setActionChangePasswordState(RequestState.loaded);
+    } catch (e) {
+      final failure = e as Failure;
+      state = state.setActionChangePasswordState(RequestState.error);
+      state = state.setMessage(failure.message);
     }
   }
 }

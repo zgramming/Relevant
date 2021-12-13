@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
 import '../../utils/utils.dart';
+import '../model/user/user_change_password_form_model.dart';
 import '../model/user/user_model.dart';
 import '../model/user/user_register_form_model.dart';
 import '../model/user/user_update_form_model.dart';
@@ -99,7 +99,6 @@ class UserRemoteDataSource {
       }
     }
 
-    log('${request.fields}');
     final streamResponse = await request.send();
     final response = await http.Response.fromStream(streamResponse);
     final decode = jsonDecode(response.body) as Map<String, dynamic>;
@@ -107,6 +106,32 @@ class UserRemoteDataSource {
     if (response.statusCode == 200) {
       final map = decode['data'] as Map<String, dynamic>;
 
+      final user = User.fromJson(map);
+      return user;
+    } else {
+      if (decode.containsKey(VALIDATION_ERROR)) {
+        final errors = decode[VALIDATION_ERROR] as Map<String, dynamic>;
+        throw ValidationException(message: errors.values.join('\n'));
+      }
+      final message = decode['message'] as String;
+      throw Exception(message);
+    }
+  }
+
+  Future<User> changePassword(UserChangePasswordFormModel model) async {
+    final url = Uri.parse("$apiUrl/change_password");
+    final response = await http.post(
+      url,
+      body: {
+        'id_user': '${model.idUser}',
+        'old_password': model.oldPassword,
+        'new_password': model.newPassword,
+        'new_password_confirmation': model.newPasswordConfirmation,
+      },
+    );
+    final decode = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode == 200) {
+      final map = decode['data'] as Map<String, dynamic>;
       final user = User.fromJson(map);
       return user;
     } else {

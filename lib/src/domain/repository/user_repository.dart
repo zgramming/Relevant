@@ -1,3 +1,4 @@
+import '../../data/model/user/user_change_password_form_model.dart';
 import '../../data/model/user/user_model.dart';
 import '../../data/model/user/user_register_form_model.dart';
 import '../../data/model/user/user_update_form_model.dart';
@@ -8,4 +9,5 @@ abstract class UserRepository {
   Future<User> update({required UserUpdateFormModel model});
   Future<User?> initializeUser();
   Future<bool> logout();
+  Future<User> changePassword(UserChangePasswordFormModel model);
 }
