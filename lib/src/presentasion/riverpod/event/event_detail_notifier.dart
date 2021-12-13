@@ -35,7 +35,7 @@ class EventDetailNotifier extends StateNotifier<EventDetailState> {
       final result = await repository.joinEvent(idUser: idUser, idEvent: idEvent);
       state = state.onSuccessJoinEvent(message: result.message, value: result.eventDetail);
     } catch (e) {
-      state = state.onErrorJoinEvent((e as Failure).message);
+      state = state.onErrorState((e as Failure).message);
     }
   }
 }
