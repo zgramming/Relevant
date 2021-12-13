@@ -4,39 +4,49 @@ class UserState extends Equatable {
   const UserState({
     this.item,
     this.message = '',
-    this.actionLoginState = RequestState.empty,
-    this.actionRegisterState = RequestState.empty,
-    this.actionUpdateState = RequestState.empty,
-    this.actionChangePasswordState = RequestState.empty,
+    this.state = RequestState.empty,
+    this.actionType = ActionType.empty,
   });
 
   final User? item;
   final String message;
-  final RequestState actionLoginState;
-  final RequestState actionRegisterState;
-  final RequestState actionUpdateState;
-  final RequestState actionChangePasswordState;
+  final RequestState state;
+  final ActionType actionType;
 
   UserState init(User? user) => copyWith(item: user);
-  UserState setMessage(String message) => copyWith(message: message);
+  UserState onLoadingState(ActionType actionType) =>
+      copyWith(state: RequestState.loading, actionType: actionType);
+  UserState onErrorState(String message) => copyWith(state: RequestState.error, message: message);
 
-  UserState setActionLoginState(RequestState state) => copyWith(actionLoginState: state);
-  UserState setActionRegisterState(RequestState state) => copyWith(actionRegisterState: state);
-  UserState setActionUpdateState(RequestState state) => copyWith(actionUpdateState: state);
-  UserState setActionChangePasswordState(RequestState state) =>
-      copyWith(actionChangePasswordState: state);
+  ///* START Login
+  UserState onSuccessLogin(User user) => copyWith(
+        item: user,
+        state: RequestState.loaded,
+      );
 
+  UserState onSuccessRegister(User user) => copyWith(
+        item: user,
+        state: RequestState.loaded,
+      );
+
+  UserState onSuccessUpdateProfile(User user) => copyWith(
+        item: user,
+        state: RequestState.loaded,
+      );
+  UserState onSuccessChangePassword(User user) => copyWith(
+        item: user,
+        state: RequestState.loaded,
+      );
+
+  ///* END Login
+
+  ///* START Register
+  ///* END Register
+
+  ///* START ChangePassword
+  ///* END ChangePassword
   @override
-  List<Object?> get props {
-    return [
-      item,
-      message,
-      actionLoginState,
-      actionRegisterState,
-      actionUpdateState,
-      actionChangePasswordState,
-    ];
-  }
+  List<Object?> get props => [item, message, state, actionType];
 
   @override
   bool get stringify => true;
@@ -44,18 +54,14 @@ class UserState extends Equatable {
   UserState copyWith({
     User? item,
     String? message,
-    RequestState? actionLoginState,
-    RequestState? actionRegisterState,
-    RequestState? actionUpdateState,
-    RequestState? actionChangePasswordState,
+    RequestState? state,
+    ActionType? actionType,
   }) {
     return UserState(
       item: item ?? this.item,
       message: message ?? this.message,
-      actionLoginState: actionLoginState ?? this.actionLoginState,
-      actionRegisterState: actionRegisterState ?? this.actionRegisterState,
-      actionUpdateState: actionUpdateState ?? this.actionUpdateState,
-      actionChangePasswordState: actionChangePasswordState ?? this.actionChangePasswordState,
+      state: state ?? this.state,
+      actionType: actionType ?? this.actionType,
     );
   }
 }

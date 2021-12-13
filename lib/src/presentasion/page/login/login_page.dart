@@ -4,7 +4,6 @@ import 'package:global_template/global_template.dart';
 
 import '../../../../injection.dart';
 import '../../../utils/utils.dart';
-import '../../riverpod/user/user_notifier.dart';
 import '../registration/register_organization_page.dart';
 import '../registration/register_volunteer_page.dart';
 import '../welcome/welcome_page.dart';
@@ -35,21 +34,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionLoginState == RequestState.error) {
-        GlobalFunction.showSnackBar(
-          context,
-          behaviour: SnackBarBehavior.floating,
-          content: Text(next.message),
-          snackBarType: SnackBarType.error,
-        );
-      } else if (next.actionLoginState == RequestState.loaded) {
-        globalNavigation.pushNamedAndRemoveUntil(
-          routeName: WelcomePage.routeNamed,
-          predicate: (route) => false,
-        );
-      }
-    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -96,20 +80,37 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const SizedBox(height: 20),
                           Consumer(
                             builder: (context, ref, child) {
-                              final actionState = ref.watch(
+                              final _state = ref.watch(
                                 userNotifier.select(
-                                  (value) => value.actionLoginState,
+                                  (value) => value.state,
                                 ),
                               );
 
                               return ElevatedButton(
-                                onPressed: actionState == RequestState.loading
+                                onPressed: _state == RequestState.loading
                                     ? null
                                     : () async {
                                         await ref.read(userNotifier.notifier).login(
                                               email: emailController.text,
                                               password: passwordController.text,
                                             );
+
+                                        if (_state == RequestState.loaded) {
+                                          await globalNavigation.pushNamedAndRemoveUntil(
+                                            routeName: WelcomePage.routeNamed,
+                                            predicate: (route) => false,
+                                          );
+                                        } else if (_state == RequestState.error) {
+                                          final message = ref.read(userNotifier).message;
+                                          Future.delayed(Duration.zero, () {
+                                            GlobalFunction.showSnackBar(
+                                              context,
+                                              content: Text(message),
+                                              behaviour: SnackBarBehavior.floating,
+                                              snackBarType: SnackBarType.error,
+                                            );
+                                          });
+                                        }
                                       },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(16.0),

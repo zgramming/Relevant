@@ -23,7 +23,7 @@ class EventBookmarkNotifier extends StateNotifier<EventBookmarkState> {
 
   Future<void> save(EventBookmarkModel model) async {
     try {
-      state = state.onLoadingState(ActionType.create);
+      state = state.onLoadingState(ActionType.post);
       final result = await repository.saveBookmark(model);
       state = state.onSuccessSave(value: model, message: result);
     } catch (e) {

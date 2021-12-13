@@ -16,7 +16,7 @@ enum EventType {
 }
 
 enum RequestState { empty, loading, loaded, error }
-enum ActionType { empty, create, read, update, delete }
+enum ActionType { empty, post, delete, put, get }
 
 const userTypeToValue = <UserType, String>{
   UserType.relawan: 'relawan',

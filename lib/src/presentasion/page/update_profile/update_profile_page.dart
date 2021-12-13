@@ -241,16 +241,14 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
             padding: const EdgeInsets.all(16.0),
             child: Consumer(
               builder: (context, ref, child) {
-                final onUpdateState = ref.watch(
-                  userNotifier.select((value) => value.actionUpdateState),
-                );
+                final _state = ref.watch(userNotifier.select((value) => value.state));
                 return ElevatedButton(
-                  onPressed: onUpdateState == RequestState.loading
+                  onPressed: _state == RequestState.loading
                       ? null
                       : () async {
                           try {
                             if (_selectedBirthDate == null) {
-                              throw const CommonFailure('Tanggal lahir wajib diisi');
+                              throw Exception('Tanggal lahir wajib diisi');
                             }
                             final model = UserUpdateFormModel(
                               id: _user.id,
@@ -269,18 +267,32 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
 
                             await ref.read(userNotifier.notifier).update(model);
 
-                            if (!mounted) return;
-
-                            GlobalFunction.showSnackBar(
-                              context,
-                              content: const Text('Berhasil update user'),
-                            );
+                            final message = ref.read(userNotifier).message;
+                            if (_state == RequestState.loaded) {
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: SnackBarType.success,
+                                );
+                              });
+                              globalNavigation.pop();
+                            } else if (_state == RequestState.error) {
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: SnackBarType.error,
+                                );
+                              });
+                            }
                           } catch (e, stackTrace) {
-                            final message = (e as Failure).message;
-                            log('error $message || stacktrace $stackTrace');
+                            log('error $e || stacktrace $stackTrace');
                             GlobalFunction.showSnackBar(
                               context,
-                              content: Text(message),
+                              content: Text(e.toString()),
                               snackBarType: SnackBarType.error,
                             );
                           }

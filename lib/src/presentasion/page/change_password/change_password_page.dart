@@ -7,7 +7,6 @@ import 'package:global_template/global_template.dart';
 import '../../../../injection.dart';
 import '../../../data/model/user/user_change_password_form_model.dart';
 import '../../../utils/utils.dart';
-import '../../riverpod/user/user_notifier.dart';
 import '../widgets/form_content.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
@@ -40,25 +39,6 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionChangePasswordState == RequestState.loaded) {
-        GlobalFunction.showSnackBar(
-          context,
-          content: const Text('Berhasil ubah password'),
-          snackBarType: SnackBarType.success,
-        );
-        globalNavigation.pop();
-      }
-
-      if (next.actionChangePasswordState == RequestState.error) {
-        GlobalFunction.showSnackBar(
-          context,
-          content: Text(next.message),
-          snackBarType: SnackBarType.error,
-        );
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ubah Password'),
@@ -116,11 +96,9 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
             padding: const EdgeInsets.all(24.0),
             child: Consumer(
               builder: (context, ref, child) {
-                final _changePasswordState = ref.watch(
-                  userNotifier.select((value) => value.actionChangePasswordState),
-                );
+                final _state = ref.watch(userNotifier.select((value) => value.state));
                 return ElevatedButton(
-                  onPressed: _changePasswordState == RequestState.loading
+                  onPressed: _state == RequestState.loading
                       ? null
                       : () async {
                           final validate = _formKey.currentState?.validate() ?? false;
@@ -137,6 +115,28 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                               newPasswordConfirmation: newPasswordConfirmationController.text,
                             );
                             await ref.read(userNotifier.notifier).changePassword(model: model);
+
+                            final message = ref.read(userNotifier).message;
+                            if (_state == RequestState.loaded) {
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: SnackBarType.success,
+                                );
+                              });
+                              globalNavigation.pop();
+                            } else if (_state == RequestState.error) {
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: SnackBarType.error,
+                                );
+                              });
+                            }
                           } catch (e, stackTrace) {
                             log('error $e || stackTract $stackTrace');
                             GlobalFunction.showSnackBar(

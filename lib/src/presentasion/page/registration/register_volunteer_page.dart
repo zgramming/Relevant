@@ -5,7 +5,6 @@ import 'package:global_template/global_template.dart';
 import '../../../../injection.dart';
 import '../../../data/model/user/user_register_form_model.dart';
 import '../../../utils/utils.dart';
-import '../../riverpod/user/user_notifier.dart';
 import '../welcome/welcome_page.dart';
 import '../widgets/form_content.dart';
 
@@ -35,28 +34,6 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserState>(userNotifier, (previous, next) {
-      if (next.actionRegisterState == RequestState.error) {
-        GlobalFunction.showSnackBar(
-          context,
-          behaviour: SnackBarBehavior.floating,
-          content: Text(next.message),
-          snackBarType: SnackBarType.error,
-        );
-      } else if (next.actionRegisterState == RequestState.loaded) {
-        GlobalFunction.showSnackBar(
-          context,
-          behaviour: SnackBarBehavior.floating,
-          content: const Text('Berhasil membuat akun relawan'),
-          snackBarType: SnackBarType.success,
-        );
-
-        globalNavigation.pushNamedAndRemoveUntil(
-          routeName: WelcomePage.routeNamed,
-          predicate: (route) => false,
-        );
-      }
-    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -122,12 +99,14 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: Consumer(
                 builder: (context, ref, child) {
-                  final actionRegisterState = ref.watch(
-                    userNotifier.select((value) => value.actionRegisterState),
+                  final _state = ref.watch(
+                    userNotifier.select(
+                      (value) => value.state,
+                    ),
                   );
 
                   return ElevatedButton(
-                    onPressed: actionRegisterState == RequestState.loading
+                    onPressed: _state == RequestState.loading
                         ? null
                         : () async {
                             final model = UserRegisterFormModel(
@@ -139,6 +118,23 @@ class _RegisterVolunteerPageState extends ConsumerState<RegisterVolunteerPage> {
                             );
 
                             await ref.read(userNotifier.notifier).register(model);
+
+                            if (_state == RequestState.loaded) {
+                              await globalNavigation.pushNamedAndRemoveUntil(
+                                routeName: WelcomePage.routeNamed,
+                                predicate: (route) => false,
+                              );
+                            } else if (_state == RequestState.error) {
+                              final message = ref.read(userNotifier).message;
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: SnackBarType.error,
+                                );
+                              });
+                            }
                           },
                     style: ElevatedButton.styleFrom(
                       primary: primary,

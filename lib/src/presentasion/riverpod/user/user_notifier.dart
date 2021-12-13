@@ -33,43 +33,37 @@ class UserNotifier extends StateNotifier<UserState> {
     required String password,
   }) async {
     try {
-      state = state.setActionLoginState(RequestState.loading);
+      state = state.onLoadingState(ActionType.post);
       final result = await repository.login(
         email: email,
         password: password,
       );
-      state = state.init(result);
-      state = state.setActionLoginState(RequestState.loaded);
+      state = state.onSuccessLogin(result);
     } catch (e) {
       final failure = e as Failure;
-      state = state.setMessage(failure.message);
-      state = state.setActionLoginState(RequestState.error);
+      state = state.onErrorState(failure.message);
     }
   }
 
   Future<void> register(UserRegisterFormModel model) async {
     try {
-      state = state.setActionRegisterState(RequestState.loading);
+      state = state.onLoadingState(ActionType.post);
       final result = await repository.register(model: model);
-      state = state.setActionRegisterState(RequestState.loaded);
-      state = state.init(result);
+      state = state.onSuccessRegister(result);
     } catch (e) {
       final failure = e as Failure;
-      state = state.setActionRegisterState(RequestState.error);
-      state = state.setMessage(failure.message);
+      state = state.onErrorState(failure.message);
     }
   }
 
   Future<void> update(UserUpdateFormModel model) async {
     try {
-      state = state.setActionUpdateState(RequestState.loading);
+      state = state.onLoadingState(ActionType.post);
       final result = await repository.update(model: model);
-      state = state.init(result);
-      state = state.setActionUpdateState(RequestState.loaded);
+      state = state.onSuccessUpdateProfile(result);
     } catch (e) {
       final failure = e as Failure;
-      state = state.setActionUpdateState(RequestState.error);
-      state = state.setMessage(failure.message);
+      state = state.onErrorState(failure.message);
     }
   }
 
@@ -77,14 +71,12 @@ class UserNotifier extends StateNotifier<UserState> {
     required UserChangePasswordFormModel model,
   }) async {
     try {
-      state = state.setActionChangePasswordState(RequestState.loading);
+      state = state.onLoadingState(ActionType.post);
       final result = await repository.changePassword(model);
-      state = state.init(result);
-      state = state.setActionChangePasswordState(RequestState.loaded);
+      state = state.onSuccessChangePassword(result);
     } catch (e) {
       final failure = e as Failure;
-      state = state.setActionChangePasswordState(RequestState.error);
-      state = state.setMessage(failure.message);
+      state = state.onErrorState(failure.message);
     }
   }
 }
