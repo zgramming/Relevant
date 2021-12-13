@@ -47,8 +47,8 @@ Future<void> main() async {
   final eventBookmarkBox = await Hive.openBox<EventBookmarkModel>(keyBookmarkHive);
   runApp(
     ProviderScope(
-      observers: [
-        Logger(),
+      observers: const [
+        // Logger(),
       ],
       overrides: [
         boxEventBookmark.overrideWithValue(eventBookmarkBox),

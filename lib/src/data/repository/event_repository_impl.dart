@@ -10,6 +10,7 @@ import '../model/event/event_detail_model.dart';
 import '../model/event/event_for_you_model.dart';
 import '../model/event/event_model.dart';
 import '../model/event/event_nearest_date_model.dart';
+import '../model/event/my_event_model.dart';
 import '../model/event/response/event_join_response_model.dart';
 
 class EventRepositoryImpl implements EventRepository {
@@ -87,6 +88,22 @@ class EventRepositoryImpl implements EventRepository {
       throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } on ValidationException catch (e) {
       throw ValidationFailure(e.message);
+    } catch (e) {
+      throw CommonFailure(e.toString());
+    }
+  }
+
+  @override
+  Future<List<MyEventModel>> myEvent({
+    required int idUser,
+    required int year,
+    required int month,
+  }) async {
+    try {
+      final result = await remoteDataSource.myEvent(idUser: idUser, year: year, month: month);
+      return result;
+    } on SocketException catch (_) {
+      throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } catch (e) {
       throw CommonFailure(e.toString());
     }

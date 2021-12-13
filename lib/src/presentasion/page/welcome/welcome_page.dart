@@ -41,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage> {
         leading: Container(
           margin: const EdgeInsets.all(12.0),
           child: const CircleAvatar(
-            backgroundColor: Colors.white,
+            backgroundColor: primary4,
           ),
         ),
         title: Consumer(

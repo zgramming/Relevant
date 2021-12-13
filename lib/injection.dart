@@ -16,6 +16,7 @@ import 'src/presentasion/riverpod/event/event_detail_notifier.dart';
 import 'src/presentasion/riverpod/event/event_for_you_notifier.dart';
 import 'src/presentasion/riverpod/event/event_nearest_date_notifier.dart';
 import 'src/presentasion/riverpod/event/event_notifier.dart';
+import 'src/presentasion/riverpod/event/my_event_notifier.dart';
 import 'src/presentasion/riverpod/global/global_notifier.dart';
 import 'src/presentasion/riverpod/type_organization/type_organization_notifier.dart';
 import 'src/presentasion/riverpod/user/user_notifier.dart';
@@ -53,6 +54,10 @@ final eventDetailNotifier = StateNotifierProvider<EventDetailNotifier, EventDeta
 
 final eventBookmarkNotifier = StateNotifierProvider<EventBookmarkNotifier, EventBookmarkState>(
   (ref) => EventBookmarkNotifier(repository: ref.read(_eventRepository)),
+);
+
+final myEventNotifier = StateNotifierProvider<MyEventNotifier, MyEventState>(
+  (ref) => MyEventNotifier(repository: ref.read(_eventRepository)),
 );
 
 ///* END RIVERPOD
