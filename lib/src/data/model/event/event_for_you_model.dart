@@ -35,7 +35,7 @@ class EventForYouModel extends Equatable {
   factory EventForYouModel.fromJson(Map<String, dynamic> json) => _$EventForYouModelFromJson(json);
   Map<String, dynamic> toJson() => _$EventForYouModelToJson(this);
 
-  EventBookmarkModel toBookmarkModel() {
+  EventBookmarkModel toBookmarkModel({required int idUser}) {
     return EventBookmarkModel(
       id: id,
       title: title,
@@ -46,7 +46,7 @@ class EventForYouModel extends Equatable {
       image: image,
       namaCategory: namaCategory,
       namaOrganisasi: namaOrganisasi,
-      idUser: 0,
+      idUser: idUser,
     );
   }
 

@@ -31,11 +31,11 @@ class EventDetailNotifier extends StateNotifier<EventDetailState> {
     required int idUser,
   }) async {
     try {
-      state = state.setOnJoinEventState(RequestState.loading);
+      state = state.onLoadingState(ActionType.create);
       final result = await repository.joinEvent(idUser: idUser, idEvent: idEvent);
-      state = state.setOnJoinEventSuccess(message: result.message, value: result.eventDetail);
+      state = state.onSuccessJoinEvent(message: result.message, value: result.eventDetail);
     } catch (e) {
-      state = state.setOnJoinEventError((e as Failure).message);
+      state = state.onErrorJoinEvent((e as Failure).message);
     }
   }
 }

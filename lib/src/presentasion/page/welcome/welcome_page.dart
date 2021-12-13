@@ -40,8 +40,14 @@ class _WelcomePageState extends State<WelcomePage> {
         centerTitle: true,
         leading: Container(
           margin: const EdgeInsets.all(12.0),
-          child: const CircleAvatar(
+          child: CircleAvatar(
             backgroundColor: primary4,
+            child: ClipOval(
+              child: Image.asset(
+                pathLogoAsset,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
         ),
         title: Consumer(

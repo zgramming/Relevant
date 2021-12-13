@@ -4,6 +4,7 @@ import 'package:global_template/global_template.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../injection.dart';
+import '../../../data/model/event/my_event_model.dart';
 import '../../../utils/utils.dart';
 import '../../riverpod/event/my_event_notifier.dart';
 import '../home/widgets/home_event_for_you_item.dart';
@@ -17,7 +18,8 @@ class MyEventPage extends ConsumerStatefulWidget {
 }
 
 class _MyEventPageState extends ConsumerState<MyEventPage> {
-  DateTime _focusedDay = DateTime.now().subtract(const Duration(days: 10));
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -30,15 +32,39 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
               Positioned.fill(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 8.0),
-                  child: TableCalendar(
+                  child: TableCalendar<MyEventModel>(
                     focusedDay: _focusedDay,
-                    currentDay: _focusedDay,
                     firstDay: DateTime(2010),
                     lastDay: DateTime(2100),
-                    calendarFormat: CalendarFormat.month,
+                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                     locale: 'id_ID',
                     rowHeight: sizes.height(context) / 10,
                     eventLoader: (day) => ref.watch(myEventByDay(day)),
+                    calendarBuilders: CalendarBuilders(
+                      markerBuilder: (context, day, events) {
+                        if (events.isEmpty) {
+                          return const SizedBox();
+                        } else {
+                          return Card(
+                            // ignore: use_named_constants
+                            margin: const EdgeInsets.only(),
+                            color: primary,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                child: Text(
+                                  '${events.length} acara',
+                                  style: latoWhite.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     // availableCalendarFormats: {
                     //   CalendarFormat.month: 'Bulan',
                     //   CalendarFormat.twoWeeks: '2 Minggu',
@@ -67,7 +93,8 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
                     ),
                     onDaySelected: (selectedDay, focusedDay) async {
                       setState(() {
-                        _focusedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                        _selectedDay = selectedDay;
                       });
 
                       await showModalBottomSheet(
@@ -94,7 +121,10 @@ class _MyEventPageState extends ConsumerState<MyEventPage> {
                     final _future = ref.watch(getMyEvent);
                     return _future.when(
                       data: (data) => const SizedBox.shrink(),
-                      error: (error, stackTrace) => Center(child: Text((error as Failure).message)),
+                      error: (error, stackTrace) => Container(
+                        color: Colors.white,
+                        child: Center(child: Text((error as Failure).message)),
+                      ),
                       loading: () => const Center(child: CircularProgressIndicator()),
                     );
                   },

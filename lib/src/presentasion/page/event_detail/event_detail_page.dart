@@ -262,7 +262,17 @@ class EventDetailPage extends ConsumerWidget {
                                                 child: Builder(
                                                   builder: (_) {
                                                     if (people.profileRelawan == null) {
-                                                      return const SizedBox();
+                                                      return Center(
+                                                        child: FittedBox(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Text(
+                                                              'No Image',
+                                                              style: latoWhite,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
                                                     }
                                                     return ClipOval(
                                                       child: CachedNetworkImage(
@@ -341,11 +351,11 @@ class EventDetailPage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final onJoinEventState = ref.watch(
-                      eventDetailNotifier.select((value) => value.onJoinEventState),
+                    final _state = ref.watch(
+                      eventDetailNotifier.select((value) => value.state),
                     );
                     return ElevatedButton(
-                      onPressed: onJoinEventState == RequestState.loading
+                      onPressed: _state == RequestState.loading
                           ? null
                           : () async {
                               final idUser = ref.read(userNotifier).item?.id ?? 0;
@@ -353,6 +363,24 @@ class EventDetailPage extends ConsumerWidget {
                                     idEvent: idEvent,
                                     idUser: idUser,
                                   );
+
+                              final message = ref.read(eventDetailNotifier).message;
+                              var snackbarType = SnackBarType.normal;
+                              if (_state == RequestState.loaded) {
+                                snackbarType = SnackBarType.success;
+                              }
+                              if (_state == RequestState.error) {
+                                snackbarType = SnackBarType.error;
+                              }
+
+                              Future.delayed(Duration.zero, () {
+                                GlobalFunction.showSnackBar(
+                                  context,
+                                  content: Text(message),
+                                  behaviour: SnackBarBehavior.floating,
+                                  snackBarType: snackbarType,
+                                );
+                              });
                             },
                       style: ElevatedButton.styleFrom(
                         primary: primary,

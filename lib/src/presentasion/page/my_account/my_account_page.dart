@@ -47,6 +47,12 @@ class MyAccountPage extends ConsumerWidget {
                               imageUrl:
                                   '$pathImageUser${imageUrl ?? ''}?v=${DateTime.now().millisecondsSinceEpoch}',
                               fit: BoxFit.cover,
+                              errorWidget: (context, url, error) => const Center(
+                                child: Icon(
+                                  Icons.error,
+                                  color: Colors.white,
+                                ),
+                              ),
                             );
                           },
                         ),

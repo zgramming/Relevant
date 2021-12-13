@@ -88,6 +88,7 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                           controller: emailController,
                           disableOutlineBorder: false,
                           hintText: 'organisasi.inc@gmail.com',
+                          keyboardType: TextInputType.emailAddress,
                         ),
                       ),
                       const SizedBox(height: 20),

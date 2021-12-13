@@ -28,7 +28,11 @@ class HomeEventForYouBookmark extends ConsumerWidget {
                     await ref.read(eventBookmarkNotifier.notifier).delete(item.id);
                   } else {
                     /// Insert
-                    await ref.read(eventBookmarkNotifier.notifier).save(item.toBookmarkModel());
+                    await ref.read(eventBookmarkNotifier.notifier).save(
+                          item.toBookmarkModel(
+                            idUser: ref.read(userNotifier).item?.id ?? 0,
+                          ),
+                        );
                   }
 
                   final message = ref.read(eventBookmarkNotifier).message;

@@ -45,9 +45,10 @@ class EventBookmarkNotifier extends StateNotifier<EventBookmarkState> {
 }
 
 final isAlreadyBookmarked = Provider.autoDispose.family<bool, int>((ref, idEvent) {
+  final idUser = ref.watch(userNotifier.select((value) => value.item?.id ?? 0));
   final result = ref
           .watch(eventBookmarkNotifier.select((value) => value.items))
-          .firstWhereOrNull((element) => element.id == idEvent) !=
+          .firstWhereOrNull((element) => element.id == idEvent && element.idUser == idUser) !=
       null;
   return result;
 });

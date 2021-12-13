@@ -1,44 +1,54 @@
 part of 'event_detail_notifier.dart';
 
 class EventDetailState extends Equatable {
-  final EventDetailModel item;
-  final RequestState onJoinEventState;
-  final String message;
-
   const EventDetailState({
     this.item = const EventDetailModel(),
-    this.onJoinEventState = RequestState.empty,
+    this.state = RequestState.empty,
     this.message = '',
+    this.actionType = ActionType.empty,
   });
 
-  EventDetailState init(EventDetailModel value) => copyWith(item: value);
-  EventDetailState setOnJoinEventState(RequestState state) => copyWith(onJoinEventState: state);
+  final EventDetailModel item;
+  final RequestState state;
+  final String message;
+  final ActionType actionType;
 
-  EventDetailState setOnJoinEventSuccess({
+  EventDetailState init(EventDetailModel value) => copyWith(item: value);
+
+  EventDetailState onLoadingState(ActionType actionType) => copyWith(
+        state: RequestState.loading,
+        actionType: actionType,
+      );
+
+  EventDetailState onSuccessJoinEvent({
     required String message,
     required EventDetailModel value,
   }) =>
       copyWith(
         message: message,
         item: value,
-        onJoinEventState: RequestState.loaded,
+        state: RequestState.loaded,
       );
 
-  EventDetailState setOnJoinEventError(String message) =>
-      copyWith(message: message, onJoinEventState: RequestState.error);
+  EventDetailState onErrorJoinEvent(String message) => copyWith(
+        message: message,
+        state: RequestState.error,
+      );
 
   @override
-  List<Object> get props => [item, onJoinEventState, message];
+  List<Object> get props => [item, state, message, actionType];
 
   EventDetailState copyWith({
     EventDetailModel? item,
-    RequestState? onJoinEventState,
+    RequestState? state,
     String? message,
+    ActionType? actionType,
   }) {
     return EventDetailState(
       item: item ?? this.item,
-      onJoinEventState: onJoinEventState ?? this.onJoinEventState,
+      state: state ?? this.state,
       message: message ?? this.message,
+      actionType: actionType ?? this.actionType,
     );
   }
 }
