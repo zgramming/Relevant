@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:http/http.dart' as http;
 
 import '../../utils/utils.dart';
@@ -19,7 +17,6 @@ class UserRemoteDataSource {
       url,
       body: {'email': email, 'password': password},
     );
-    // log(response.body);
 
     final decode = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode == 200) {
@@ -27,7 +24,6 @@ class UserRemoteDataSource {
       final user = User.fromJson(map);
       return user;
     } else {
-      log('masuk sini');
       if (decode.containsKey(VALIDATION_ERROR)) {
         final errors = decode[VALIDATION_ERROR] as Map<String, dynamic>;
         throw ValidationException(message: errors.values.join('\n'));
