@@ -94,14 +94,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                               email: emailController.text,
                                               password: passwordController.text,
                                             );
-
-                                        if (_state == RequestState.loaded) {
+                                        final notifier = ref.read(userNotifier);
+                                        if (notifier.state == RequestState.loaded) {
                                           await globalNavigation.pushNamedAndRemoveUntil(
                                             routeName: WelcomePage.routeNamed,
                                             predicate: (route) => false,
                                           );
-                                        } else if (_state == RequestState.error) {
-                                          final message = ref.read(userNotifier).message;
+                                        } else if (notifier.state == RequestState.error) {
+                                          final message = notifier.message;
                                           Future.delayed(Duration.zero, () {
                                             GlobalFunction.showSnackBar(
                                               context,

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Relevant',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-      supportedLocales: const [Locale('id', 'ID')],
+      // supportedLocales: const [Locale('id', 'ID')],
       navigatorKey: navigatorKey,
       theme: theme.copyWith(
         primaryColor: primary,
@@ -80,6 +80,7 @@ class MyApp extends StatelessWidget {
           default:
           // return SizedBox();
         }
+        return null;
       },
     );
   }

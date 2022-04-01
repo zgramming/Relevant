@@ -175,18 +175,18 @@ class _RegisterOrganizationPageState extends ConsumerState<RegisterOrganizationP
                             );
 
                             await ref.read(userNotifier.notifier).register(model);
+                            final notifier = ref.read(userNotifier);
 
-                            if (_state == RequestState.loaded) {
+                            if (notifier.state == RequestState.loaded) {
                               await globalNavigation.pushNamedAndRemoveUntil(
                                 routeName: WelcomePage.routeNamed,
                                 predicate: (route) => false,
                               );
-                            } else if (_state == RequestState.error) {
-                              final message = ref.read(userNotifier).message;
+                            } else if (notifier.state == RequestState.error) {
                               Future.delayed(Duration.zero, () {
                                 GlobalFunction.showSnackBar(
                                   context,
-                                  content: Text(message),
+                                  content: Text(notifier.message),
                                   behaviour: SnackBarBehavior.floating,
                                   snackBarType: SnackBarType.error,
                                 );

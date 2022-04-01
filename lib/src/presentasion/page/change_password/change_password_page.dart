@@ -116,22 +116,22 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                             );
                             await ref.read(userNotifier.notifier).changePassword(model: model);
 
-                            final message = ref.read(userNotifier).message;
-                            if (_state == RequestState.loaded) {
+                            final currentState = ref.read(userNotifier);
+                            if (currentState.state == RequestState.loaded) {
                               Future.delayed(Duration.zero, () {
                                 GlobalFunction.showSnackBar(
                                   context,
-                                  content: Text(message),
+                                  content: Text("Berhasil update passsword"),
                                   behaviour: SnackBarBehavior.floating,
                                   snackBarType: SnackBarType.success,
                                 );
                               });
                               globalNavigation.pop();
-                            } else if (_state == RequestState.error) {
+                            } else if (currentState.state == RequestState.error) {
                               Future.delayed(Duration.zero, () {
                                 GlobalFunction.showSnackBar(
                                   context,
-                                  content: Text(message),
+                                  content: Text(currentState.message),
                                   behaviour: SnackBarBehavior.floating,
                                   snackBarType: SnackBarType.error,
                                 );

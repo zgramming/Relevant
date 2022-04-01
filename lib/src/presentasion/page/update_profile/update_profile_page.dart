@@ -247,12 +247,9 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                       ? null
                       : () async {
                           try {
-                            if (_selectedBirthDate == null) {
-                              throw Exception('Tanggal lahir wajib diisi');
-                            }
                             final model = UserUpdateFormModel(
                               id: _user.id,
-                              birthDate: _selectedBirthDate!,
+                              birthDate: _selectedBirthDate,
                               type: _user.type,
                               phone: phoneController.text,
                               address: addressController.text,
@@ -267,22 +264,22 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
 
                             await ref.read(userNotifier.notifier).update(model);
 
-                            final message = ref.read(userNotifier).message;
-                            if (_state == RequestState.loaded) {
+                            final currentState = ref.read(userNotifier);
+                            if (currentState.state == RequestState.loaded) {
                               Future.delayed(Duration.zero, () {
                                 GlobalFunction.showSnackBar(
                                   context,
-                                  content: Text(message),
+                                  content: const Text("Berhasil update profile"),
                                   behaviour: SnackBarBehavior.floating,
                                   snackBarType: SnackBarType.success,
                                 );
                               });
                               globalNavigation.pop();
-                            } else if (_state == RequestState.error) {
+                            } else if (currentState.state == RequestState.error) {
                               Future.delayed(Duration.zero, () {
                                 GlobalFunction.showSnackBar(
                                   context,
-                                  content: Text(message),
+                                  content: Text(currentState.message),
                                   behaviour: SnackBarBehavior.floating,
                                   snackBarType: SnackBarType.error,
                                 );

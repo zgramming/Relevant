@@ -8,7 +8,7 @@ class UserUpdateFormModel extends Equatable {
   const UserUpdateFormModel({
     required this.id,
     this.name = '',
-    required this.birthDate,
+    this.birthDate,
     this.phone = '',
     this.pictureProfile,
     this.logo,
@@ -22,7 +22,7 @@ class UserUpdateFormModel extends Equatable {
 
   final int id;
   final String name;
-  final DateTime birthDate;
+  final DateTime? birthDate;
   final String phone;
   final File? pictureProfile;
   final File? logo;
@@ -39,7 +39,7 @@ class UserUpdateFormModel extends Equatable {
   // TODO: implement stringify
   bool get stringify => true;
   @override
-  List<Object?> get props {
+  List get props {
     return [
       id,
       name,

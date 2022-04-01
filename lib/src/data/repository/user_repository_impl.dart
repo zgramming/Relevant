@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import '../../domain/repository/user_repository.dart';
@@ -29,7 +30,12 @@ class UserRepositoryImpl implements UserRepository {
       final user = await remoteDataSource.login(email: email, password: password);
       await localDataSource.saveSharedPreferences(user);
       return user;
-    } on SocketException catch (_) {
+    } on SocketException catch (e) {
+      log('Socket Exception ${e.address?.address}');
+      log('Socket Exception ${e.address?.host}');
+      log('Socket Exception ${e.osError?.errorCode}');
+      log('Socket Exception ${e.osError?.message}');
+      log('Socket Exception ${e.port}');
       throw const ConnectionFailure('Koneksi ke server bermasalah, coba beberapa saat lagi');
     } on ValidationException catch (e) {
       throw ValidationFailure(e.message);

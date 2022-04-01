@@ -299,23 +299,23 @@ class _CreateEventPageState extends ConsumerState<CreateEventPage> {
                                   );
 
                                   await ref.read(eventNotifier.notifier).create(form);
-                                  final message = ref.read(eventNotifier).message;
+                                  final notifier = ref.read(eventNotifier);
 
-                                  if (_state == RequestState.loaded) {
+                                  if (notifier.state == RequestState.loaded) {
                                     Future.delayed(Duration.zero, () {
                                       GlobalFunction.showSnackBar(
                                         context,
-                                        content: Text(message),
+                                        content: Text("Berhasil Membuat Event"),
                                         behaviour: SnackBarBehavior.floating,
                                         snackBarType: SnackBarType.success,
                                       );
                                     });
                                     globalNavigation.pop();
-                                  } else if (_state == RequestState.error) {
+                                  } else if (notifier.state == RequestState.error) {
                                     Future.delayed(Duration.zero, () {
                                       GlobalFunction.showSnackBar(
                                         context,
-                                        content: Text(message),
+                                        content: Text(notifier.message),
                                         behaviour: SnackBarBehavior.floating,
                                         snackBarType: SnackBarType.error,
                                       );
